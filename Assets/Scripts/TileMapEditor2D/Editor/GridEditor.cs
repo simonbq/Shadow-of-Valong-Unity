@@ -1,18 +1,20 @@
 ﻿using UnityEngine;
 using UnityEditor;
+using System.Collections;
 
-public class TileEditor : EditorWindow {
+public class GridEditor : EditorWindow {
 	static private GameObject gridGameObject;
 	static private Grid grid;
 
 	private bool snapping = true;
 	private Vector3 prev;
 
-	[MenuItem("Edit/TileEditor")]
+	[MenuItem("Tileset/Grid settings")]
 	static void Init()
 	{
-		var window = (TileEditor)EditorWindow.GetWindow(typeof(TileEditor));
+		var window = (GridEditor)EditorWindow.GetWindow(typeof(GridEditor));
 		window.maxSize = new Vector2 (200, 100);
+		window.title = "Grid settings";
 		gridGameObject = new GameObject ("GridObject");
 		gridGameObject.AddComponent("Grid");
 		grid = gridGameObject.GetComponent<Grid>();
@@ -38,7 +40,6 @@ public class TileEditor : EditorWindow {
 				var pos = tf.transform.position;
 				pos.x = move (pos.x, grid.width);
 				pos.y = move (pos.y, grid.height);
-				pos.z = move (pos.z, grid.width);
 				tf.transform.position = pos;
 			}
 
