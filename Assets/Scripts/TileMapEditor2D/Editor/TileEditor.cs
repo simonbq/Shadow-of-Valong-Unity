@@ -2,10 +2,10 @@
 using UnityEditor;
 
 public class TileEditor : EditorWindow {
-	private bool showGrid = true;
+	private bool gridVisible = true;
 
-	static private Grid grid;
 	static private GameObject gridGameObject;
+	static private Grid grid;
 
 	[MenuItem("Edit/TileEditor")]
 	static void Init()
@@ -18,7 +18,16 @@ public class TileEditor : EditorWindow {
 
 	void OnGUI()
 	{
-		showGrid = EditorGUILayout.Toggle ("Show grid", showGrid);
+		gridVisible = EditorGUILayout.Toggle("Toggle grid", gridVisible);
+		if(gridVisible)
+		{
+			gridGameObject.GetComponent<Grid>().toggleVisible();
+		}
+	}
+
+	void Update()
+	{
+
 	}
 
 	void OnDestroy()
