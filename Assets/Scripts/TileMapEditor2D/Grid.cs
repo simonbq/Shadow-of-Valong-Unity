@@ -24,16 +24,4 @@ public class Grid : MonoBehaviour {
 						}
 				}
 	}
-
-	public void toggleVisible()
-	{
-		if(visible)
-		{
-			visible = false;
-		}
-
-		else{
-			visible = true;
-		}
-	}
 }
