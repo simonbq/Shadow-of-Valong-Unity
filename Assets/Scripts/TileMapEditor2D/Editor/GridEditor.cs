@@ -110,7 +110,17 @@ public class GridEditor : EditorWindow {
 		if(Event.current.type == EventType.mouseDown &&
 		   placeObjects)
 		{
-			Debug.Log ("PLACE");
+			Vector2 mpos = Event.current.mousePosition;
+			Vector3 pos = sceneView.camera.ScreenToWorldPoint(mpos);
+			pos.x = move (pos.x, grid.width);
+			pos.y = move (-pos.y, grid.height);
+			pos.z = 0;
+
+			GameObject created = new GameObject("Tile");
+			created.transform.position = pos;
+			created.AddComponent("SpriteRenderer");
+			var renderer = created.GetComponent<SpriteRenderer>();
+			renderer.sprite = selectedSprite;
 		}
 
 		if(placeObjects)
