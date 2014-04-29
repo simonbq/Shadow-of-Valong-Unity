@@ -10,6 +10,7 @@ public class GridEditor : EditorWindow {
 	private Vector3 prev;
 	private Sprite selectedSprite;
 	private int selectedSpriteId = 0;
+	private bool placeObjects = false;
 	private int prevSpriteId = -1;
 	private int selectedTileId = 0;
 	private Texture2D[] buttons;
@@ -55,6 +56,7 @@ public class GridEditor : EditorWindow {
 		{
 			index[i] = i;
 		}
+		placeObjects = EditorGUILayout.Toggle ("Place tiles", placeObjects);
 		selectedSpriteId = EditorGUILayout.IntPopup (selectedSpriteId, tileNames, index);
 
 		scrollPos = EditorGUILayout.BeginScrollView (scrollPos);
@@ -105,19 +107,25 @@ public class GridEditor : EditorWindow {
 
 	void SceneGUI(SceneView sceneView)
 	{
-		if(Event.current.type == EventType.mouseDown)
+		if(Event.current.type == EventType.mouseDown &&
+		   placeObjects)
 		{
-			HandleUtility.AddDefaultControl(GUIUtility.GetControlID(FocusType.Passive));
 			Debug.Log ("PLACE");
 		}
 
+		if(placeObjects)
+		{
+			HandleUtility.AddDefaultControl(GUIUtility.GetControlID(FocusType.Passive));
+		}
+
 		else{
-			HandleUtility.AddDefaultControl(GUIUtility.GetControlID(FocusType.Native));
+			HandleUtility.Repaint ();
 		}
 	}
 
 	void OnDestroy()
 	{
+		placeObjects = false;
 		GameObject.DestroyImmediate (gridGameObject);
 	}
 
