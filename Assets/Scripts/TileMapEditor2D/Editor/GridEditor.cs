@@ -36,6 +36,11 @@ public class GridEditor : EditorWindow {
 		loadTiles ();
 	}
 
+	void OnEnable()
+	{
+		SceneView.onSceneGUIDelegate += SceneGUI;
+	}
+
 	void OnGUI()
 	{
 		grid = gridGameObject.GetComponent<Grid>();
@@ -95,6 +100,19 @@ public class GridEditor : EditorWindow {
 			}
 
 			prev = Selection.transforms[0].position;
+		}
+	}
+
+	void SceneGUI(SceneView sceneView)
+	{
+		if(Event.current.type == EventType.mouseDown)
+		{
+			HandleUtility.AddDefaultControl(GUIUtility.GetControlID(FocusType.Passive));
+			Debug.Log ("PLACE");
+		}
+
+		else{
+			HandleUtility.AddDefaultControl(GUIUtility.GetControlID(FocusType.Native));
 		}
 	}
 
