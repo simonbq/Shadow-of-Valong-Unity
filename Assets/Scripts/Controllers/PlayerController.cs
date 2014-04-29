@@ -16,21 +16,21 @@ public class PlayerController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetButton ("Fire1")) {
+		if (Input.GetButtonDown("Fire1")) {
 			/*A button*/
 			//Attack
 		}
-		if (Input.GetButton ("Fire2")) {
+		if (Input.GetButtonDown("Fire2")) {
 			/*B button*/
 			//
 		}
-		if (Input.GetButton ("Fire1")) {
+		if (Input.GetButtonDown("Fire3")) {
 			/*X button*/
 			//Interact
 			RaycastHit2D hit = Physics2D.Raycast(transform.position, currentDirection, 1, 1 << LayerMask.NameToLayer("Interactable"));
 			if(hit){
 				Debug.Log(hit.collider.gameObject.name);
-				hit.collider.gameObject.SendMessage("Interact");
+				hit.collider.gameObject.SendMessage("Interact", transform);
 			}
 		}
 		Debug.DrawRay(transform.position, currentDirection, Color.red);
