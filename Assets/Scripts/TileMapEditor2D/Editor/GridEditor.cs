@@ -111,9 +111,10 @@ public class GridEditor : EditorWindow {
 		   placeObjects)
 		{
 			Vector2 mpos = Event.current.mousePosition;
-			Vector3 pos = sceneView.camera.ScreenToWorldPoint(mpos);
+			mpos.y = sceneView.camera.pixelHeight - mpos.y;
+			Vector3 pos = sceneView.camera.ScreenPointToRay(mpos).origin;
 			pos.x = move (pos.x, grid.width);
-			pos.y = move (-pos.y, grid.height);
+			pos.y = move (pos.y, grid.height);
 			pos.z = 0;
 
 			GameObject created = new GameObject("Tile");
