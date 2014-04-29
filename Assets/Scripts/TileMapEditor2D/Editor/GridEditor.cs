@@ -9,17 +9,23 @@ public class GridEditor : EditorWindow {
 	private bool snapping = true;
 	private Vector3 prev;
 	private Sprite selectedSprite;
-	private int selectedSpriteId;
-	private int selectedTileId;
+	private int selectedSpriteId = 0;
+	private int prevSpriteId = -1;
+	private int selectedTileId = 0;
+	private Texture2D[] buttons;
+	private Sprite[] tiles;
+
+	private Vector2 scrollPos;
+	private int tileGridWidth;
 
 	private static string[] tileNames;
 
-
 	[MenuItem("Tileset/Grid settings")]
+
 	static void Init()
 	{
 		var window = (GridEditor)EditorWindow.GetWindow(typeof(GridEditor));
-		window.maxSize = new Vector2 (200, 100);
+		window.minSize = new Vector2 (240, 320);
 		window.title = "Grid settings";
 		gridGameObject = GameObject.Find ("Grid");
 		if(gridGameObject == null)
@@ -39,30 +45,38 @@ public class GridEditor : EditorWindow {
 		grid.height = EditorGUILayout.FloatField("Snap Y", grid.height);
 
 		EditorGUILayout.Space ();
-
 		int[] index = new int[tileNames.Length];
 		for(int i = 0; i < tileNames.Length; i++)
 		{
 			index[i] = i;
 		}
-
 		selectedSpriteId = EditorGUILayout.IntPopup (selectedSpriteId, tileNames, index);
 
-		Sprite[] t = Resources.LoadAll<Sprite> ("Tilemaps/"+tileNames[selectedSpriteId]);
-		Texture2D[] buttons = new Texture2D[t.Length];
-		for(int i = 0; i < t.Length; i++)
+		scrollPos = EditorGUILayout.BeginScrollView (scrollPos);
+		if(prevSpriteId != selectedSpriteId)
 		{
-			Texture2D tex = new Texture2D((int)t[i].rect.width, (int)t[i].rect.height);
-			Color[] pix = t[i].texture.GetPixels((int)t[i].rect.x,
-			                                 (int)t[i].rect.y,
-			                                 (int)t[i].rect.width,
-			                                 (int)t[i].rect.height);
-			tex.SetPixels(pix);
-			tex.Apply();
-			buttons[i] = tex;
+			selectedTileId = 0;
+			tiles = Resources.LoadAll<Sprite> ("Tilemaps/"+tileNames[selectedSpriteId]);
+			buttons = new Texture2D[tiles.Length];
+			for(int i = 0; i < tiles.Length; i++)
+			{
+				Texture2D tex = new Texture2D((int)tiles[i].rect.width, (int)tiles[i].rect.height);
+				Color[] pix = tiles[i].texture.GetPixels((int)tiles[i].rect.x,
+				                                     	(int)tiles[i].rect.y,
+				                                     	(int)tiles[i].rect.width,
+				                                     	(int)tiles[i].rect.height);
+				tex.SetPixels(pix);
+				tex.Apply();
+				buttons[i] = tex;
+			}
+
+			tileGridWidth = tiles[0].texture.width/buttons[0].width;
 		}
 
-		selectedTileId = GUILayout.SelectionGrid (selectedTileId, buttons, 3);
+		selectedTileId = GUILayout.SelectionGrid (selectedTileId, buttons, tileGridWidth);
+		selectedSprite = tiles [selectedTileId];
+		prevSpriteId = selectedSpriteId;
+		EditorGUILayout.EndScrollView ();
 	}
 
 	void Update()
