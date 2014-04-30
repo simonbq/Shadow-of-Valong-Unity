@@ -109,7 +109,10 @@ public class TileEditor : EditorWindow {
 
 	void SceneGUI(SceneView sceneView)
 	{
-		if(Event.current.type == EventType.mouseDown &&
+		Event e = Event.current;
+		if(e.type == EventType.mouseDown &&
+		   e.button == 0 &&
+		   e.isMouse &&
 		   placeObjects)
 		{
 			Vector2 mpos = Event.current.mousePosition;
