@@ -2,7 +2,7 @@
 using UnityEditor;
 using System.Collections;
 
-public class GridEditor : EditorWindow {
+public class TileEditor : EditorWindow {
 	static private GameObject gridGameObject;
 	static private Grid grid;
 
@@ -22,13 +22,13 @@ public class GridEditor : EditorWindow {
 
 	private static string[] tileNames;
 
-	[MenuItem("Tileset/Grid settings")]
+	[MenuItem("Edit/Tileset Editor %1")]
 
 	static void Init()
 	{
-		var window = (GridEditor)EditorWindow.GetWindow(typeof(GridEditor));
+		var window = (TileEditor)EditorWindow.GetWindow(typeof(TileEditor));
 		window.minSize = new Vector2 (240, 320);
-		window.title = "Grid settings";
+		window.title = "Tileset Editor";
 		gridGameObject = GameObject.Find ("Grid");
 		if(gridGameObject == null)
 		{
