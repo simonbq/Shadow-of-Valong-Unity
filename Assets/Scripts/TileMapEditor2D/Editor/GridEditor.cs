@@ -11,6 +11,7 @@ public class GridEditor : EditorWindow {
 	private Sprite selectedSprite;
 	private int selectedSpriteId = 0;
 	private bool placeObjects = false;
+	private int tileLayer = 0;
 	private int prevSpriteId = -1;
 	private int selectedTileId = 0;
 	private Texture2D[] buttons;
@@ -57,6 +58,7 @@ public class GridEditor : EditorWindow {
 			index[i] = i;
 		}
 		placeObjects = EditorGUILayout.Toggle ("Place tiles", placeObjects);
+		tileLayer = EditorGUILayout.IntField ("Layer", tileLayer);
 		selectedSpriteId = EditorGUILayout.IntPopup (selectedSpriteId, tileNames, index);
 
 		scrollPos = EditorGUILayout.BeginScrollView (scrollPos);
@@ -117,11 +119,7 @@ public class GridEditor : EditorWindow {
 			pos.y = move (pos.y, grid.height);
 			pos.z = 0;
 
-			GameObject created = new GameObject("Tile");
-			created.transform.position = pos;
-			created.AddComponent("SpriteRenderer");
-			var renderer = created.GetComponent<SpriteRenderer>();
-			renderer.sprite = selectedSprite;
+			placeTile (pos);
 		}
 
 		if(placeObjects)
@@ -138,6 +136,16 @@ public class GridEditor : EditorWindow {
 	{
 		placeObjects = false;
 		GameObject.DestroyImmediate (gridGameObject);
+	}
+
+	private void placeTile(Vector3 pos)
+	{
+		GameObject created = new GameObject("Tile");
+		created.transform.position = pos;
+		created.AddComponent("SpriteRenderer");
+		var renderer = created.GetComponent<SpriteRenderer>();
+		renderer.sprite = selectedSprite;
+		renderer.sortingOrder = tileLayer;
 	}
 
 	private float move(float val, float snap)
