@@ -5,7 +5,8 @@ public class PlayerController : MonoBehaviour {
 
 	public float movementSpeed = 2f;
 
-	private bool isGrabbing = false;
+	private GameObject grabbedObject = null;
+	private GameObject heldObject = null;
 	private Vector2 currentDirection = -Vector2.up;
 	protected Animator animator;
 
@@ -30,18 +31,23 @@ public class PlayerController : MonoBehaviour {
 			RaycastHit2D hit = Physics2D.Raycast(transform.position, currentDirection, 1, (1 << LayerMask.NameToLayer("Interactable") | 1 << LayerMask.NameToLayer("Grabbable"))	);
 			if(hit){
 				Debug.Log(hit.collider.gameObject.name);
-				hit.collider.gameObject.SendMessage("Interact", transform);
+				if(hit.collider.gameObject.layer == LayerMask.NameToLayer("Interactable")){
+					hit.collider.gameObject.SendMessage("Interact", transform);
+
+				}
 
 				//Push & pull
 				if(hit.collider.gameObject.layer == LayerMask.NameToLayer("Grabbable")){
-					isGrabbing = true;
-					hit.collider.gameObject.SendMessage("Interact", transform);
+					hit.collider.gameObject.SendMessage("StartGrabbing", transform);
+					grabbedObject = hit.collider.gameObject;
 				}
 			}
 		}
+
 		if (Input.GetButtonUp("Fire3")) {
-			if(isGrabbing){
-				isGrabbing=false;
+			if(grabbedObject != null){
+				grabbedObject.SendMessage("StopGrabbing", transform);
+				grabbedObject = null;
 			}
 		}
 
@@ -57,23 +63,26 @@ public class PlayerController : MonoBehaviour {
 		float verticalInput = Input.GetAxis ("Vertical");
 		//Movement
 		transform.Translate (horizontalInput * movementSpeed * Time.deltaTime, verticalInput*movementSpeed * Time.deltaTime, 0);
-		if(!isGrabbing){
+		animator.SetFloat("SpeedX", horizontalInput);
+		animator.SetFloat("SpeedY", verticalInput);
+		if(grabbedObject == null){
+
+
 			if (horizontalInput > 0) {
 				currentDirection = Vector2.right;
-				animator.Play("PlayerRight");
 			}
 			if (horizontalInput < 0) {
 				currentDirection = -Vector2.right;
-				animator.Play("PlayerLeft");
 			}
 			if (verticalInput > 0) {
 				currentDirection = Vector2.up;
-				animator.Play("PlayerUp");
 			}
 			if (verticalInput < 0) {
 				currentDirection = -Vector2.up;
-				animator.Play("PlayerDown");
 			}
+
+			animator.SetFloat("DirectionX", currentDirection.x);
+			animator.SetFloat("DirectionY", currentDirection.y);
 		}
 	}
 }
