@@ -119,7 +119,11 @@ public class TileEditor : EditorWindow {
 				pos.x = move (pos.x, grid.width);
 				pos.y = move (pos.y, grid.height);
 				tf.transform.position = pos;
-				tf.name = "Tile_" + pos.x + "x" + pos.y + "_" + tf.GetComponent<SpriteRenderer>().sortingOrder;
+
+				if(tf.tag == "Tile")
+				{
+					tf.name = "Tile_" + pos.x + "x" + pos.y + "_" + tf.GetComponent<SpriteRenderer>().sortingOrder;
+				}
 			}
 
 			prev = Selection.transforms[0].position;
