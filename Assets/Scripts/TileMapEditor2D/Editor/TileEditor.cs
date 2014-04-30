@@ -119,6 +119,7 @@ public class TileEditor : EditorWindow {
 				pos.x = move (pos.x, grid.width);
 				pos.y = move (pos.y, grid.height);
 				tf.transform.position = pos;
+				tf.name = "Tile_" + pos.x + "x" + pos.y + "_" + tf.GetComponent<SpriteRenderer>().sortingOrder;
 			}
 
 			prev = Selection.transforms[0].position;
@@ -197,15 +198,20 @@ public class TileEditor : EditorWindow {
 
 	private void placeTile(Vector3 pos)
 	{
-		GameObject created = new GameObject("Tile");
+		string name = "Tile_" + pos.x + "x" + pos.y + "_" + tileLayer;
+		GameObject created = GameObject.Find (name);
+		if(created == null)
+		{
+			created = new GameObject(name);
+			created.AddComponent<SpriteRenderer> ();
+			created.AddComponent<TileID> ();
+			created.transform.parent = parentObject.transform;
+		}
 		created.tag = "Tile";
 		created.transform.position = pos;
-		created.transform.parent = parentObject.transform;
-		created.AddComponent<SpriteRenderer> ();
 		var renderer = created.GetComponent<SpriteRenderer>();
 		renderer.sprite = selectedSprite;
 		renderer.sortingOrder = tileLayer;
-		created.AddComponent<TileID> ();
 		var tid = created.GetComponent<TileID> ();
 		tid.tileID = selectedTileId;
 	}
