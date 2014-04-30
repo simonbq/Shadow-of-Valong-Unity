@@ -4,6 +4,7 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
 
 	public float movementSpeed = 2f;
+	public float interactionDistance = 0.5f;
 
 	private GameObject grabbedObject = null;
 	private GameObject heldObject = null;
@@ -21,15 +22,22 @@ public class PlayerController : MonoBehaviour {
 			/*A button*/
 			//Attack
 		}
-		if (Input.GetButtonDown("Fire2")) {
+		if (Input.GetButtonDown("Inventory")) {
 			/*B button*/
-			//
+			//Inventory
 		}
-		if (Input.GetButtonDown("Fire3")) {
+		if (Input.GetButtonDown("Interact")) {
 			/*X button*/
 			//Interact
-			RaycastHit2D hit = Physics2D.Raycast(transform.position, currentDirection, 1, (1 << LayerMask.NameToLayer("Interactable") | 1 << LayerMask.NameToLayer("Grabbable"))	);
-			if(hit){
+
+			if(heldObject != null){
+				//fix throw code
+				heldObject.SendMessage("Drop", transform);
+				heldObject = null;
+			}
+
+			RaycastHit2D hit = Physics2D.Raycast(transform.position, currentDirection, interactionDistance, (1 << LayerMask.NameToLayer("Interactable") | 1 << LayerMask.NameToLayer("Grabbable") | 1 << LayerMask.NameToLayer("Liftable")));
+			if(hit && heldObject == null){
 				Debug.Log(hit.collider.gameObject.name);
 				if(hit.collider.gameObject.layer == LayerMask.NameToLayer("Interactable")){
 					hit.collider.gameObject.SendMessage("Interact", transform);
@@ -41,14 +49,25 @@ public class PlayerController : MonoBehaviour {
 					hit.collider.gameObject.SendMessage("StartGrabbing", transform);
 					grabbedObject = hit.collider.gameObject;
 				}
+
+				if(hit.collider.gameObject.layer == LayerMask.NameToLayer("Liftable")){
+					hit.collider.gameObject.SendMessage("Lift", transform);
+					heldObject = hit.collider.gameObject;
+				}
 			}
 		}
 
-		if (Input.GetButtonUp("Fire3")) {
+		if (Input.GetButtonUp("Interact")) {
 			if(grabbedObject != null){
 				grabbedObject.SendMessage("StopGrabbing", transform);
 				grabbedObject = null;
 			}
+		}
+
+		if (Input.GetButtonDown ("Map")) {
+			/*Y button*/
+			//Map
+
 		}
 
 		Debug.DrawRay(transform.position, currentDirection, Color.red);
@@ -63,26 +82,31 @@ public class PlayerController : MonoBehaviour {
 		float verticalInput = Input.GetAxis ("Vertical");
 		//Movement
 		transform.Translate (horizontalInput * movementSpeed * Time.deltaTime, verticalInput*movementSpeed * Time.deltaTime, 0);
-		animator.SetFloat("SpeedX", horizontalInput);
-		animator.SetFloat("SpeedY", verticalInput);
-		if(grabbedObject == null){
+		if(horizontalInput != 0 || verticalInput != 0){
+			animator.SetFloat("SpeedX", horizontalInput);
+			animator.SetFloat("SpeedY", verticalInput);
+			animator.SetBool("Walking", true);
+			if(grabbedObject == null){
 
+					
+				if (horizontalInput > 0) {
+					currentDirection = Vector2.right;
+				}
+				if (horizontalInput < 0) {
+					currentDirection = -Vector2.right;
+				}
+				if (verticalInput > 0) {
+					currentDirection = Vector2.up;
+				}
+				if (verticalInput < 0) {
+					currentDirection = -Vector2.up;
+				}
 
-			if (horizontalInput > 0) {
-				currentDirection = Vector2.right;
+				animator.SetFloat("DirectionX", currentDirection.x);
+				animator.SetFloat("DirectionY", currentDirection.y);
 			}
-			if (horizontalInput < 0) {
-				currentDirection = -Vector2.right;
-			}
-			if (verticalInput > 0) {
-				currentDirection = Vector2.up;
-			}
-			if (verticalInput < 0) {
-				currentDirection = -Vector2.up;
-			}
-
-			animator.SetFloat("DirectionX", currentDirection.x);
-			animator.SetFloat("DirectionY", currentDirection.y);
+		}else{
+			animator.SetBool("Walking", false);
 		}
 	}
 }
