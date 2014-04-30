@@ -33,7 +33,7 @@ public class TileEditor : EditorWindow {
 		if(gridGameObject == null)
 		{
 			gridGameObject = new GameObject ("Grid");
-			gridGameObject.AddComponent("Grid");
+			gridGameObject.AddComponent<Grid>();
 		}
 		loadTiles ();
 	}
@@ -61,6 +61,8 @@ public class TileEditor : EditorWindow {
 		tileLayer = EditorGUILayout.IntField ("Layer", tileLayer);
 		selectedSpriteId = EditorGUILayout.IntPopup (selectedSpriteId, tileNames, index);
 
+		//knapp för att reloada tiles
+
 		scrollPos = EditorGUILayout.BeginScrollView (scrollPos);
 		if(prevSpriteId != selectedSpriteId)
 		{
@@ -86,6 +88,16 @@ public class TileEditor : EditorWindow {
 		selectedSprite = tiles [selectedTileId];
 		prevSpriteId = selectedSpriteId;
 		EditorGUILayout.EndScrollView ();
+
+		if(GUILayout.Button ("Replace selected tileset"))
+		{
+			replaceSelectedTileset();
+		}
+
+		if(GUILayout.Button ("Replace selected tile(s)"))
+		{
+			replaceSelectedTile();
+		}
 	}
 
 	void Update()
@@ -141,14 +153,54 @@ public class TileEditor : EditorWindow {
 		GameObject.DestroyImmediate (gridGameObject);
 	}
 
+	private void replaceSelectedTileset()
+	{
+		if(Selection.transforms.Length > 0)
+		{
+			foreach(var r in Selection.transforms)
+			{
+				if(r.tag == "Tile")
+				{
+					int t = r.GetComponent<TileID>().tileID;
+					if(t >= tiles.Length)
+					{
+						t = 0;
+					}
+					var s = r.GetComponent<SpriteRenderer>();
+					s.sprite = tiles[t];
+				}
+			}
+		}
+	}
+
+	private void replaceSelectedTile()
+	{
+		if(Selection.transforms.Length > 0)
+		{
+			foreach(var r in Selection.transforms)
+			{
+				if(r.tag == "Tile")
+				{
+					r.GetComponent<TileID>().tileID = selectedTileId;
+					var s = r.GetComponent<SpriteRenderer>();
+					s.sprite = selectedSprite;
+				}
+			}
+		}
+	}
+
 	private void placeTile(Vector3 pos)
 	{
 		GameObject created = new GameObject("Tile");
+		created.tag = "Tile";
 		created.transform.position = pos;
-		created.AddComponent("SpriteRenderer");
+		created.AddComponent<SpriteRenderer> ();
 		var renderer = created.GetComponent<SpriteRenderer>();
 		renderer.sprite = selectedSprite;
 		renderer.sortingOrder = tileLayer;
+		created.AddComponent<TileID> ();
+		var tid = created.GetComponent<TileID> ();
+		tid.tileID = selectedTileId;
 	}
 
 	private float move(float val, float snap)
