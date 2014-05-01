@@ -4,7 +4,6 @@ using System.Collections;
 
 public class TileEditor : EditorWindow {
 	static private GameObject gridGameObject;
-	static private GameObject parentObject;
 	static private Grid grid;
 
 	private bool snapping = true;
@@ -31,15 +30,10 @@ public class TileEditor : EditorWindow {
 		window.minSize = new Vector2 (240, 320);
 		window.title = "Tileset Editor";
 		gridGameObject = GameObject.Find ("Grid");
-		parentObject = GameObject.Find ("Tiles");
 		if(gridGameObject == null)
 		{
 			gridGameObject = new GameObject ("Grid");
 			gridGameObject.AddComponent<Grid>();
-		}
-		if(parentObject == null)
-		{
-			parentObject = new GameObject ("Tiles");
 		}
 		loadTiles ();
 	}
@@ -206,6 +200,11 @@ public class TileEditor : EditorWindow {
 		GameObject created = GameObject.Find (name);
 		if(created == null)
 		{
+			GameObject parentObject = GameObject.Find ("TileLayer_" +tileLayer);
+			if(parentObject == null)
+			{
+				parentObject = new GameObject("TileLayer_" +tileLayer);
+			}
 			created = new GameObject(name);
 			created.AddComponent<SpriteRenderer> ();
 			created.AddComponent<TileID> ();
