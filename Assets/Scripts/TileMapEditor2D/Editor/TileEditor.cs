@@ -4,6 +4,7 @@ using System.Collections;
 
 public class TileEditor : EditorWindow {
 	static private GameObject gridGameObject;
+	static private GameObject masterParent;
 	static private Grid grid;
 
 	private bool snapping = true;
@@ -29,13 +30,22 @@ public class TileEditor : EditorWindow {
 		var window = (TileEditor)EditorWindow.GetWindow(typeof(TileEditor));
 		window.minSize = new Vector2 (240, 320);
 		window.title = "Tileset Editor";
+
 		gridGameObject = GameObject.Find ("Grid");
 		if(gridGameObject == null)
 		{
 			gridGameObject = new GameObject ("Grid");
 			gridGameObject.AddComponent<Grid>();
 		}
+
+		masterParent = GameObject.Find ("Tiles");
+		if(masterParent == null)
+		{
+			masterParent = new GameObject("Tiles");
+		}
+
 		loadTiles ();
+		lockAll(false);
 	}
 
 	void OnEnable()
@@ -57,11 +67,10 @@ public class TileEditor : EditorWindow {
 		{
 			index[i] = i;
 		}
+
 		placeObjects = EditorGUILayout.Toggle ("Place tiles", placeObjects);
 		tileLayer = EditorGUILayout.IntField ("Layer", tileLayer);
 		selectedSpriteId = EditorGUILayout.IntPopup (selectedSpriteId, tileNames, index);
-
-		//knapp för att reloada tiles
 
 		scrollPos = EditorGUILayout.BeginScrollView (scrollPos);
 		if(prevSpriteId != selectedSpriteId)
@@ -152,8 +161,14 @@ public class TileEditor : EditorWindow {
 		}
 	}
 
+	void OnProjectChange()
+	{
+		loadTiles();
+	}
+
 	void OnDestroy()
 	{
+		lockAll(true);
 		placeObjects = false;
 		GameObject.DestroyImmediate (gridGameObject);
 	}
@@ -166,7 +181,7 @@ public class TileEditor : EditorWindow {
 			{
 				if(r.tag == "Tile")
 				{
-					int t = r.GetComponent<TileID>().tileID;
+					int t = r.GetComponent<Tile>().tileID;
 					if(t >= tiles.Length)
 					{
 						t = 0;
@@ -186,7 +201,7 @@ public class TileEditor : EditorWindow {
 			{
 				if(r.tag == "Tile")
 				{
-					r.GetComponent<TileID>().tileID = selectedTileId;
+					r.GetComponent<Tile>().tileID = selectedTileId;
 					var s = r.GetComponent<SpriteRenderer>();
 					s.sprite = selectedSprite;
 				}
@@ -204,10 +219,11 @@ public class TileEditor : EditorWindow {
 			if(parentObject == null)
 			{
 				parentObject = new GameObject("TileLayer_" +tileLayer);
+				parentObject.transform.parent = masterParent.transform;
 			}
 			created = new GameObject(name);
 			created.AddComponent<SpriteRenderer> ();
-			created.AddComponent<TileID> ();
+			created.AddComponent<Tile> ();
 			created.transform.parent = parentObject.transform;
 		}
 		created.tag = "Tile";
@@ -215,13 +231,27 @@ public class TileEditor : EditorWindow {
 		var renderer = created.GetComponent<SpriteRenderer>();
 		renderer.sprite = selectedSprite;
 		renderer.sortingOrder = tileLayer;
-		var tid = created.GetComponent<TileID> ();
+		var tid = created.GetComponent<Tile> ();
 		tid.tileID = selectedTileId;
 	}
 
 	private float move(float val, float snap)
 	{
 		return snap * Mathf.Round (val / snap);
+	}
+
+	private static void lockAll(bool locking)
+	{
+		foreach(Transform c in masterParent.transform)
+		{
+			foreach(Transform cc in c.transform)
+			{
+				if(cc.tag == "Tile")
+				{
+					cc.GetComponent<Tile>().locked = locking;
+				}
+			}
+		}
 	}
 
 	private static void loadTiles()
