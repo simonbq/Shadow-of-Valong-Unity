@@ -225,6 +225,11 @@ public class TileEditor : EditorWindow {
 		GameObject created = GameObject.Find (name);
 		if(created == null)
 		{
+			masterParent = GameObject.Find ("Tiles");
+			if(masterParent == null)
+			{
+				masterParent = new GameObject("Tiles");
+			}
 			GameObject parentObject = GameObject.Find ("TileLayer_" +tileLayer);
 			if(parentObject == null)
 			{
