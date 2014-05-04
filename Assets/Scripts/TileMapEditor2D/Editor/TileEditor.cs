@@ -125,6 +125,9 @@ public class TileEditor : EditorWindow {
 
 			prev = Selection.transforms[0].position;
 		}
+
+		Grid.setRect(new Rect(0,0,2,2));
+		Grid.toggleRect(true);
 	}
 
 	void SceneGUI(SceneView sceneView)
