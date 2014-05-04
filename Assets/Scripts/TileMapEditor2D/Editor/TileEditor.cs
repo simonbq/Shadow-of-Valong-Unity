@@ -30,27 +30,14 @@ public class TileEditor : EditorWindow {
 		var window = (TileEditor)EditorWindow.GetWindow(typeof(TileEditor));
 		window.minSize = new Vector2 (240, 320);
 		window.title = "Tileset Editor";
-
-		gridGameObject = GameObject.Find ("Grid");
-		if(gridGameObject == null)
-		{
-			gridGameObject = new GameObject ("Grid");
-			gridGameObject.AddComponent<Grid>();
-		}
-
-		masterParent = GameObject.Find ("Tiles");
-		if(masterParent == null)
-		{
-			masterParent = new GameObject("Tiles");
-		}
-
-		loadTiles ();
-		lockAll(false);
 	}
 
 	void OnEnable()
 	{
 		SceneView.onSceneGUIDelegate += SceneGUI;
+		resetObjects();
+		loadTiles ();
+		lockAll(false);
 	}
 
 	void OnGUI()
@@ -107,6 +94,13 @@ public class TileEditor : EditorWindow {
 		{
 			replaceSelectedTile();
 		}
+	}
+
+	void OnDidOpenScene()
+	{
+		resetObjects();
+		loadTiles ();
+		lockAll(false);
 	}
 
 	void Update()
@@ -171,6 +165,22 @@ public class TileEditor : EditorWindow {
 		lockAll(true);
 		placeObjects = false;
 		GameObject.DestroyImmediate (gridGameObject);
+	}
+
+	private void resetObjects()
+	{
+		gridGameObject = GameObject.Find ("Grid");
+		if(gridGameObject == null)
+		{
+			gridGameObject = new GameObject ("Grid");
+			gridGameObject.AddComponent<Grid>();
+		}
+		
+		masterParent = GameObject.Find ("Tiles");
+		if(masterParent == null)
+		{
+			masterParent = new GameObject("Tiles");
+		}
 	}
 
 	private void replaceSelectedTileset()
