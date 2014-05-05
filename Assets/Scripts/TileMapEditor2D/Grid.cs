@@ -9,6 +9,7 @@ public class Grid : MonoBehaviour {
 
 	static private Rect srect;
 	static private bool rectvisible = false;
+
 	void OnDrawGizmos(){
 		if (width < 0.1 || height < 0.1) {
 				visible = false;
@@ -45,13 +46,13 @@ public class Grid : MonoBehaviour {
 		{
 			Gizmos.color = Color.green;
 			Gizmos.DrawLine(new Vector3(srect.x, srect.y, 1f),
-			                new Vector3(srect.width, srect.y, 1f));
+			                new Vector3(srect.x+srect.width, srect.y, 1f));
 			Gizmos.DrawLine(new Vector3(srect.x, srect.y, 1f),
-			                new Vector3(srect.x, srect.height, 1f));
+			                new Vector3(srect.x, srect.y+srect.height, 1f));
 			Gizmos.DrawLine(new Vector3(srect.x, srect.y+srect.height, 1f),
-			                new Vector3(srect.width, srect.y+srect.height, 1f));
+			                new Vector3(srect.x+srect.width, srect.y+srect.height, 1f));
 			Gizmos.DrawLine(new Vector3(srect.x+srect.width, srect.y, 1f),
-			                new Vector3(srect.x+srect.width, srect.height, 1f));
+			                new Vector3(srect.x+srect.width, srect.y+srect.height, 1f));
 		}
 	}
 }

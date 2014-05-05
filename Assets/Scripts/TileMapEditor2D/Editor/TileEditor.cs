@@ -21,6 +21,9 @@ public class TileEditor : EditorWindow {
 	private Vector2 scrollPos;
 	private int tileGridWidth;
 
+	private Rect select;
+	private bool selecting = false;
+
 	private static string[] tileNames;
 
 	[MenuItem("Edit/Tileset Editor %1")]
@@ -126,14 +129,52 @@ public class TileEditor : EditorWindow {
 			prev = Selection.transforms[0].position;
 		}
 
-		Grid.setRect(new Rect(0,0,2,2));
-		Grid.toggleRect(true);
+		/*Grid.setRect(new Rect(0,0,2,2));
+		Grid.toggleRect(true);*/
 	}
 
 	void SceneGUI(SceneView sceneView)
 	{
 		Event e = Event.current;
-		if(e.type == EventType.mouseDown &&
+
+		if(placeObjects)
+		{
+			switch(e.type)
+			{
+			case EventType.mouseDrag:
+				if(selecting)
+				{
+					Vector3 mpos = editorToWorld(sceneView);
+					select.width = mpos.x - select.x;
+					select.height = mpos.y - select.y;
+					select.width = move (select.width, grid.width);
+					select.height = move (select.height, grid.height);
+					Grid.setRect(select);
+					Grid.toggleRect(true);
+				}
+				break;
+			case EventType.mouseDown:
+				if(e.button == 0)
+				{
+					Vector3 pos = editorToWorld(sceneView);
+					pos.x = move (pos.x, grid.width);
+					pos.y = move (pos.y, grid.height);
+					select = new Rect(pos.x, pos.y, 0, 0);
+					selecting = true;
+				}
+				break;
+			case EventType.mouseUp:
+				if(e.button == 0)
+				{
+					Grid.toggleRect(false);
+					Debug.Log("released!");
+					selecting = false;
+				}
+				break;
+			}
+		}
+
+		/*if(e.type == EventType.mouseDown &&
 		   e.button == 0 &&
 		   e.isMouse &&
 		   placeObjects)
@@ -146,7 +187,7 @@ public class TileEditor : EditorWindow {
 			pos.z = 0;
 
 			placeTile (pos);
-		}
+		}*/
 
 		if(placeObjects)
 		{
@@ -168,6 +209,13 @@ public class TileEditor : EditorWindow {
 		lockAll(true);
 		placeObjects = false;
 		GameObject.DestroyImmediate (gridGameObject);
+	}
+
+	private Vector3 editorToWorld(SceneView sceneView)
+	{
+		Vector2 mpos = Event.current.mousePosition;
+		mpos.y = sceneView.camera.pixelHeight - mpos.y;
+		return sceneView.camera.ScreenPointToRay(mpos).origin;
 	}
 
 	private void resetObjects()
