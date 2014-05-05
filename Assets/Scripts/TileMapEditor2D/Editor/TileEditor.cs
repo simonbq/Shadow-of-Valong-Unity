@@ -128,9 +128,6 @@ public class TileEditor : EditorWindow {
 
 			prev = Selection.transforms[0].position;
 		}
-
-		/*Grid.setRect(new Rect(0,0,2,2));
-		Grid.toggleRect(true);*/
 	}
 
 	void SceneGUI(SceneView sceneView)
@@ -179,11 +176,15 @@ public class TileEditor : EditorWindow {
 						temp.height = -temp.height;
 					}
 
-					for(float x = temp.x; x < temp.x + temp.width; x+=grid.width)
+					for(int x = 0; x < Mathf.FloorToInt(temp.width / grid.width); x++)
 					{
-						for(float y = temp.y; y < temp.y + temp.height; y+=grid.height)
+						for(int y = 0; y < Mathf.FloorToInt(temp.height / grid.height); y++)
 						{
-							placeTile (new Vector3(x, y));
+							Vector3 pos = new Vector3(temp.x + (x*grid.width), temp.y + (y*grid.height));
+							pos.x = move (pos.x, grid.width);
+							pos.y = move (pos.y, grid.height);
+							pos.y += grid.height;
+							placeTile (pos);
 						}
 					}
 
