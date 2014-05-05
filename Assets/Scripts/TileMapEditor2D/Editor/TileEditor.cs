@@ -152,13 +152,24 @@ public class TileEditor : EditorWindow {
 				}
 				break;
 			case EventType.mouseDown:
+				Vector3 pos = editorToWorld(sceneView);
+				pos.x = move (pos.x, grid.width);
+				pos.y = move (pos.y, grid.height);
+
 				if(e.button == 0)
 				{
-					Vector3 pos = editorToWorld(sceneView);
-					pos.x = move (pos.x, grid.width);
-					pos.y = move (pos.y, grid.height);
 					select = new Rect(pos.x, pos.y, 0, 0);
 					selecting = true;
+				}
+
+				else if(e.button == 1)
+				{
+					string name = "Tile_" + pos.x + "x" + pos.y + "_" + tileLayer;
+					GameObject del = GameObject.Find(name);
+					if(del != null)
+					{
+						GameObject.DestroyImmediate(del);
+					}
 				}
 				break;
 			case EventType.mouseUp:
@@ -169,12 +180,12 @@ public class TileEditor : EditorWindow {
 					{
 						Vector2 mpos = Event.current.mousePosition;
 						mpos.y = sceneView.camera.pixelHeight - mpos.y;
-						Vector3 pos = sceneView.camera.ScreenPointToRay(mpos).origin;
-						pos.x = move (pos.x, grid.width);
-						pos.y = move (pos.y, grid.height);
-						pos.z = 0;
+						Vector3 tpos = sceneView.camera.ScreenPointToRay(mpos).origin;
+						tpos.x = move (tpos.x, grid.width);
+						tpos.y = move (tpos.y, grid.height);
+						tpos.z = 0;
 						
-						placeTile (pos);
+						placeTile (tpos);
 					}
 
 					else{
@@ -194,11 +205,11 @@ public class TileEditor : EditorWindow {
 						{
 							for(int y = 0; y < Mathf.FloorToInt(temp.height / grid.height); y++)
 							{
-								Vector3 pos = new Vector3(temp.x + (x*grid.width), temp.y + (y*grid.height));
-								pos.x = move (pos.x, grid.width);
-								pos.y = move (pos.y, grid.height);
-								pos.y += grid.height;
-								placeTile (pos);
+								Vector3 tpos = new Vector3(temp.x + (x*grid.width), temp.y + (y*grid.height));
+								tpos.x = move (tpos.x, grid.width);
+								tpos.y = move (tpos.y, grid.height);
+								tpos.y += grid.height;
+								placeTile (tpos);
 							}
 						}
 					}
