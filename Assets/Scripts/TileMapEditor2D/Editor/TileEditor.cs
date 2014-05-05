@@ -164,27 +164,42 @@ public class TileEditor : EditorWindow {
 			case EventType.mouseUp:
 				if(e.button == 0)
 				{
-					Rect temp = select;
-					if(temp.x+temp.width < temp.x)
+					if(select.width == 0 &&
+					   select.height == 0)
 					{
-						temp.x += temp.width;
-						temp.width = -temp.width;
-					}
-					if(temp.y+temp.height < temp.y)
-					{
-						temp.y += temp.height;
-						temp.height = -temp.height;
+						Vector2 mpos = Event.current.mousePosition;
+						mpos.y = sceneView.camera.pixelHeight - mpos.y;
+						Vector3 pos = sceneView.camera.ScreenPointToRay(mpos).origin;
+						pos.x = move (pos.x, grid.width);
+						pos.y = move (pos.y, grid.height);
+						pos.z = 0;
+						
+						placeTile (pos);
 					}
 
-					for(int x = 0; x < Mathf.FloorToInt(temp.width / grid.width); x++)
-					{
-						for(int y = 0; y < Mathf.FloorToInt(temp.height / grid.height); y++)
+					else{
+						Rect temp = select;
+						if(temp.x+temp.width < temp.x)
 						{
-							Vector3 pos = new Vector3(temp.x + (x*grid.width), temp.y + (y*grid.height));
-							pos.x = move (pos.x, grid.width);
-							pos.y = move (pos.y, grid.height);
-							pos.y += grid.height;
-							placeTile (pos);
+							temp.x += temp.width;
+							temp.width = -temp.width;
+						}
+						if(temp.y+temp.height < temp.y)
+						{
+							temp.y += temp.height;
+							temp.height = -temp.height;
+						}
+
+						for(int x = 0; x < Mathf.FloorToInt(temp.width / grid.width); x++)
+						{
+							for(int y = 0; y < Mathf.FloorToInt(temp.height / grid.height); y++)
+							{
+								Vector3 pos = new Vector3(temp.x + (x*grid.width), temp.y + (y*grid.height));
+								pos.x = move (pos.x, grid.width);
+								pos.y = move (pos.y, grid.height);
+								pos.y += grid.height;
+								placeTile (pos);
+							}
 						}
 					}
 
@@ -194,21 +209,6 @@ public class TileEditor : EditorWindow {
 				break;
 			}
 		}
-
-		/*if(e.type == EventType.mouseDown &&
-		   e.button == 0 &&
-		   e.isMouse &&
-		   placeObjects)
-		{
-			Vector2 mpos = Event.current.mousePosition;
-			mpos.y = sceneView.camera.pixelHeight - mpos.y;
-			Vector3 pos = sceneView.camera.ScreenPointToRay(mpos).origin;
-			pos.x = move (pos.x, grid.width);
-			pos.y = move (pos.y, grid.height);
-			pos.z = 0;
-
-			placeTile (pos);
-		}*/
 
 		if(placeObjects)
 		{
