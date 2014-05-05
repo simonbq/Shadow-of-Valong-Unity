@@ -26,8 +26,9 @@ public class Grid : MonoBehaviour {
 					Gizmos.DrawLine (new Vector3 (Mathf.Floor (x / width) * width, -1000000.0f, 0.0f),
                 new Vector3 (Mathf.Floor (x / width) * width, 1000000.0f, 0.0f));
 			}
-			drawRect ();
 		}
+
+		drawRect ();
 	}
 
 	static public void setRect(Rect rect)

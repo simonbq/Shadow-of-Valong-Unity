@@ -166,8 +166,27 @@ public class TileEditor : EditorWindow {
 			case EventType.mouseUp:
 				if(e.button == 0)
 				{
+					Rect temp = select;
+					if(temp.x+temp.width < temp.x)
+					{
+						temp.x += temp.width;
+						temp.width = -temp.width;
+					}
+					if(temp.y+temp.height < temp.y)
+					{
+						temp.y += temp.height;
+						temp.height = -temp.height;
+					}
+
+					for(float x = temp.x; x < temp.x + temp.width; x+=grid.width)
+					{
+						for(float y = temp.y; y < temp.y + temp.height; y+=grid.height)
+						{
+							placeTile (new Vector3(x, y));
+						}
+					}
+
 					Grid.toggleRect(false);
-					Debug.Log("released!");
 					selecting = false;
 				}
 				break;
