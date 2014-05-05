@@ -151,6 +151,7 @@ public class TileEditor : EditorWindow {
 					select.height = move (select.height, grid.height);
 					Grid.setRect(select);
 					Grid.toggleRect(true);
+					SceneView.RepaintAll();
 				}
 				break;
 			case EventType.mouseDown:

@@ -28,21 +28,6 @@ public class Grid : MonoBehaviour {
 			}
 		}
 
-		drawRect ();
-	}
-
-	static public void setRect(Rect rect)
-	{
-		srect = rect;
-	}
-
-	static public void toggleRect(bool visible)
-	{
-		rectvisible = visible;
-	}
-
-	private void drawRect()
-	{
 		if(rectvisible == true)
 		{
 			Gizmos.color = Color.green;
@@ -55,5 +40,15 @@ public class Grid : MonoBehaviour {
 			Gizmos.DrawLine(new Vector3(srect.x+srect.width, srect.y, 1f),
 			                new Vector3(srect.x+srect.width, srect.y+srect.height, 1f));
 		}
+	}
+
+	static public void setRect(Rect rect)
+	{
+		srect = rect;
+	}
+
+	static public void toggleRect(bool visible)
+	{
+		rectvisible = visible;
 	}
 }
