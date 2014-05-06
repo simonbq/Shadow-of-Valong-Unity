@@ -88,6 +88,11 @@ public class TileEditor : EditorWindow {
 		prevSpriteId = selectedSpriteId;
 		EditorGUILayout.EndScrollView ();
 
+		if(GUILayout.Button ("Move selected to layer"))
+		{
+			replaceLayer();
+		}
+
 		if(GUILayout.Button ("Replace selected tileset"))
 		{
 			replaceSelectedTileset();
@@ -263,6 +268,42 @@ public class TileEditor : EditorWindow {
 		if(masterParent == null)
 		{
 			masterParent = new GameObject("Tiles");
+		}
+	}
+
+	private void replaceLayer()
+	{
+		if(Selection.transforms.Length > 0)
+		{
+			foreach(var r in Selection.transforms)
+			{
+				if(r.tag == "Tile")
+				{
+					masterParent = GameObject.Find ("Tiles");
+					if(masterParent == null)
+					{
+						masterParent = new GameObject("Tiles");
+					}
+
+					GameObject parentObject = GameObject.Find ("TileLayer_" +tileLayer);
+					if(parentObject == null)
+					{
+						parentObject = new GameObject("TileLayer_" +tileLayer);
+						parentObject.transform.parent = masterParent.transform;
+					}
+
+					string name = "Tile_" + r.transform.position.x + "x" + r.transform.position.y + "_" + tileLayer;
+
+					GameObject delete = GameObject.Find (name);
+					if(name != null)
+					{
+						GameObject.DestroyImmediate(delete);
+					}
+
+					r.transform.parent = parentObject.transform;
+					r.transform.name = name;
+				}
+			}
 		}
 	}
 
