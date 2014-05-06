@@ -88,6 +88,11 @@ public class TileEditor : EditorWindow {
 		prevSpriteId = selectedSpriteId;
 		EditorGUILayout.EndScrollView ();
 
+		if(GUILayout.Button ("Select layer"))
+		{
+			selectLayer();
+		}
+
 		if(GUILayout.Button ("Move selected to layer"))
 		{
 			replaceLayer();
@@ -271,6 +276,36 @@ public class TileEditor : EditorWindow {
 		}
 	}
 
+	private void selectLayer()
+	{
+		GameObject layer;
+		if(Selection.transforms.Length <= 0)
+		{
+			layer = GameObject.Find ("TileLayer_" + tileLayer);
+		}
+
+		else{
+			layer = Selection.activeGameObject;
+		}
+
+		if(layer != null)
+		{
+			ArrayList s = new ArrayList ();
+			foreach(Transform child in layer.transform)
+			{
+				s.Add(child.gameObject);
+			}
+
+			GameObject[] sel = new GameObject[s.Count];
+			for(int i = 0; i < s.Count; i++)
+			{
+				sel[i] = (GameObject)s[i];
+			}
+
+			Selection.objects = sel;
+		}
+	}
+
 	private void replaceLayer()
 	{
 		if(Selection.transforms.Length > 0)
@@ -290,6 +325,7 @@ public class TileEditor : EditorWindow {
 					{
 						parentObject = new GameObject("TileLayer_" +tileLayer);
 						parentObject.transform.parent = masterParent.transform;
+						parentObject.tag = "TileLayer";
 					}
 
 					string name = "Tile_" + r.transform.position.x + "x" + r.transform.position.y + "_" + tileLayer;
@@ -359,6 +395,7 @@ public class TileEditor : EditorWindow {
 			{
 				parentObject = new GameObject("TileLayer_" +tileLayer);
 				parentObject.transform.parent = masterParent.transform;
+				parentObject.tag = "TileLayer";
 			}
 			created = new GameObject(name);
 			created.AddComponent<SpriteRenderer> ();
