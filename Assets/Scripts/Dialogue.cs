@@ -8,7 +8,8 @@ public class Dialogue{
     [XmlAttribute("id")]
     public int Id;
 
-    [XmlArray("Texts")]
-    [XmlArrayItem("Text")]
-    public List<string> Texts = new List<string>();
+    [XmlArray(ElementName = "Texts")]
+    [XmlArrayItem(typeof(Text), ElementName = "Text")]
+    public List<Text> Texts = new List<Text>();
+
 }

@@ -12,21 +12,24 @@ public class DogController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(running){
-			if(transform.position.x < 3){
-			transform.Translate(0.02f, 0, 0);
-				collider2D.enabled=false;
-				RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right, 0.5f, 1 << LayerMask.NameToLayer("Interactable"));
-				collider2D.enabled=true;
-				if(hit){
-					Debug.Log(hit.collider.gameObject.name);
-					hit.collider.gameObject.SendMessage("Interact", transform);
-				}
-			}
-		}
+        if(GameController.gameState == GameController.GameState.GAME){
+		    if(running){
+			    if(transform.position.x < 3){
+			    transform.Translate(0.02f, 0, 0);
+				    collider2D.enabled=false;
+				    RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right, 0.5f, 1 << LayerMask.NameToLayer("Interactable"));
+				    collider2D.enabled=true;
+				    if(hit){
+					    Debug.Log(hit.collider.gameObject.name);
+					    hit.collider.gameObject.SendMessage("Interact", transform);
+				    }
+			    }
+		    }
+        }
 	}
 	
 	void Interact(){
+        GameController.startDialogue(3);
 		running = true;
 	}
 }
