@@ -178,7 +178,7 @@ public class TileEditor : EditorWindow {
 					GameObject del = GameObject.Find(name);
 					if(del != null)
 					{
-						GameObject.DestroyImmediate(del);
+						Undo.DestroyObjectImmediate(del);
 					}
 				}
 				break;
@@ -331,13 +331,14 @@ public class TileEditor : EditorWindow {
 					string name = "Tile_" + r.transform.position.x + "x" + r.transform.position.y + "_" + tileLayer;
 
 					GameObject delete = GameObject.Find (name);
-					if(name != null)
+					if(delete != null)
 					{
 						GameObject.DestroyImmediate(delete);
 					}
 
 					r.transform.parent = parentObject.transform;
 					r.transform.name = name;
+					r.transform.renderer.sortingOrder = tileLayer;
 				}
 			}
 		}
@@ -383,25 +384,30 @@ public class TileEditor : EditorWindow {
 	{
 		string name = "Tile_" + pos.x + "x" + pos.y + "_" + tileLayer;
 		GameObject created = GameObject.Find (name);
-		if(created == null)
+		if(created != null)
 		{
-			masterParent = GameObject.Find ("Tiles");
-			if(masterParent == null)
-			{
-				masterParent = new GameObject("Tiles");
-			}
-			GameObject parentObject = GameObject.Find ("TileLayer_" +tileLayer);
-			if(parentObject == null)
-			{
-				parentObject = new GameObject("TileLayer_" +tileLayer);
-				parentObject.transform.parent = masterParent.transform;
-				parentObject.tag = "TileLayer";
-			}
-			created = new GameObject(name);
-			created.AddComponent<SpriteRenderer> ();
-			created.AddComponent<Tile> ();
-			created.transform.parent = parentObject.transform;
+			Undo.DestroyObjectImmediate(created);
+		} 
+
+		masterParent = GameObject.Find ("Tiles");
+		if(masterParent == null)
+		{
+			masterParent = new GameObject("Tiles");
 		}
+		GameObject parentObject = GameObject.Find ("TileLayer_" +tileLayer);
+		if(parentObject == null)
+		{
+			parentObject = new GameObject("TileLayer_" +tileLayer);
+			parentObject.transform.parent = masterParent.transform;
+			parentObject.tag = "TileLayer";
+		}
+		created = new GameObject(name);
+		created.AddComponent<SpriteRenderer> ();
+		created.AddComponent<Tile> ();
+		created.transform.parent = parentObject.transform;
+		Undo.RegisterCreatedObjectUndo(created, "Created tile");
+
+
 		created.tag = "Tile";
 		created.transform.position = pos;
 		var renderer = created.GetComponent<SpriteRenderer>();
