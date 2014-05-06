@@ -1,15 +1,21 @@
 <DialogueCollection>
   <Dialogues>
     <Dialogue id="0">
-	    <Text speakerId="1">Hello there!</Text>
-	    <Text speakerId="1">Aren't you that hero everyone is talking about?</Text>
+    	<Texts>
+		    <Text speakerId="1">Hello there!</Text>
+		    <Text speakerId="1">Aren't you that hero everyone is talking about?</Text>
+	    </Texts>
       <Text speakerId="0">Sure am! My name is {PlayerName}.</Text>
     </Dialogue>
     <Dialogue id="1">
-      <Text speakerId="1">Aren't you that hero everyone is talking about?</Text>
+    	<Texts>
+    		<Text speakerId="1">Aren't you that hero everyone is talking about?</Text>
+    	</Texts>
     </Dialogue>
     <Dialogue id="2">
-      <Text speakerId="2">I like cheese.</Text>
+    	<Texts>
+    		<Text speakerId="2">I like cheese.</Text>
+    	</Texts>
     </Dialogue>
   </Dialogues>
 </DialogueCollection>
