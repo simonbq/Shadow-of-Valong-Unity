@@ -93,17 +93,29 @@ public class TileEditor : EditorWindow {
 			selectLayer();
 		}
 
-		if(GUILayout.Button ("Move selected to layer"))
+		if(GUILayout.Button ("Move selected to layer") &&
+		   EditorUtility.DisplayDialog("Move selection to layer?", 
+		                            "Colliding tiles will be replaced. This can not be undone.",
+		                            "Move",
+		                            "Cancel"))
 		{
 			replaceLayer();
 		}
 
-		if(GUILayout.Button ("Replace selected tileset"))
+		if(GUILayout.Button ("Replace selected tileset") &&
+		   EditorUtility.DisplayDialog("Replace selected tileset?", 
+		                            "Selection will be replaced with coresponding tiles of selected tileset. This can not be undone.",
+		                            "Replace",
+		                            "Cancel"))
 		{
 			replaceSelectedTileset();
 		}
 
-		if(GUILayout.Button ("Replace selected tile(s)"))
+		if(GUILayout.Button ("Replace selected tile(s)") &&
+		   EditorUtility.DisplayDialog("Replace selected tiles?", 
+		                            "Selection will be replaced with selected tile. This can not be undone.",
+		                            "Replace",
+		                            "Cancel"))
 		{
 			replaceSelectedTile();
 		}
