@@ -240,6 +240,11 @@ public class TileEditor : EditorWindow {
 
 					Grid.toggleRect(false);
 					selecting = false;
+
+					if(solidObjects)
+					{
+						repaintGrid ();
+					}
 				}
 				break;
 			}
@@ -265,6 +270,21 @@ public class TileEditor : EditorWindow {
 		lockAll(true);
 		placeObjects = false;
 		GameObject.DestroyImmediate (gridGameObject);
+	}
+
+	private void repaintGrid()
+	{
+		var w = grid.width;
+		var h = grid.height;
+		var v = grid.visible;
+
+		GameObject.DestroyImmediate (gridGameObject);
+		gridGameObject = new GameObject ("Grid");
+		gridGameObject.AddComponent<Grid>();
+
+		grid.width = w;
+		grid.height = h;
+		grid.visible = v;
 	}
 
 	private Vector3 editorToWorld(SceneView sceneView)
@@ -433,6 +453,7 @@ public class TileEditor : EditorWindow {
 		if(solidObjects == true)
 		{
 			created.AddComponent<BoxCollider2D> ();
+			SceneView.RepaintAll();
 		}
 	}
 
