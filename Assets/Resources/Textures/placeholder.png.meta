@@ -1,0 +1,549 @@
+fileFormatVersion: 2
+guid: 04d89d972487046479942e4c91beb78c
+TextureImporter:
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 1024
+  textureSettings:
+    filterMode: -1
+    aniso: 1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: placeholder_0
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 576
+        width: 30
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_1
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 384
+        width: 33
+        height: 240
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_2
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 432
+        width: 30
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_3
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 432
+        width: 30
+        height: 186
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_4
+      rect:
+        serializedVersion: 2
+        x: 201
+        y: 528
+        width: 30
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_5
+      rect:
+        serializedVersion: 2
+        x: 249
+        y: 576
+        width: 30
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_6
+      rect:
+        serializedVersion: 2
+        x: 297
+        y: 480
+        width: 30
+        height: 144
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_7
+      rect:
+        serializedVersion: 2
+        x: 348
+        y: 576
+        width: 27
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_8
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 336
+        width: 39
+        height: 288
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_9
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 564
+        width: 96
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_10
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 384
+        width: 30
+        height: 186
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_11
+      rect:
+        serializedVersion: 2
+        x: 246
+        y: 432
+        width: 33
+        height: 141
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_12
+      rect:
+        serializedVersion: 2
+        x: 348
+        y: 528
+        width: 27
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_13
+      rect:
+        serializedVersion: 2
+        x: 204
+        y: 480
+        width: 24
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_14
+      rect:
+        serializedVersion: 2
+        x: 345
+        y: 336
+        width: 36
+        height: 189
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_15
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 468
+        width: 96
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_16
+      rect:
+        serializedVersion: 2
+        x: 201
+        y: 288
+        width: 33
+        height: 189
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_17
+      rect:
+        serializedVersion: 2
+        x: 297
+        y: 432
+        width: 30
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_18
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 384
+        width: 21
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_19
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 384
+        width: 21
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_20
+      rect:
+        serializedVersion: 2
+        x: 246
+        y: 192
+        width: 36
+        height: 237
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_21
+      rect:
+        serializedVersion: 2
+        x: 294
+        y: 240
+        width: 36
+        height: 189
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_22
+      rect:
+        serializedVersion: 2
+        x: 435
+        y: 402
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_23
+      rect:
+        serializedVersion: 2
+        x: 483
+        y: 402
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_24
+      rect:
+        serializedVersion: 2
+        x: 498
+        y: 402
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_25
+      rect:
+        serializedVersion: 2
+        x: 531
+        y: 402
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_26
+      rect:
+        serializedVersion: 2
+        x: 546
+        y: 402
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_27
+      rect:
+        serializedVersion: 2
+        x: 561
+        y: 402
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_28
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 336
+        width: 24
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_29
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 147
+        width: 45
+        height: 234
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_30
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 336
+        width: 24
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_31
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 336
+        width: 63
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_32
+      rect:
+        serializedVersion: 2
+        x: 513
+        y: 363
+        width: 30
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_33
+      rect:
+        serializedVersion: 2
+        x: 561
+        y: 369
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_34
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 336
+        width: 18
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_35
+      rect:
+        serializedVersion: 2
+        x: 513
+        y: 336
+        width: 30
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_36
+      rect:
+        serializedVersion: 2
+        x: 561
+        y: 336
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_37
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 240
+        width: 27
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_38
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 288
+        width: 21
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_39
+      rect:
+        serializedVersion: 2
+        x: 348
+        y: 288
+        width: 24
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_40
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 288
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_41
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 306
+        width: 15
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_42
+      rect:
+        serializedVersion: 2
+        x: 498
+        y: 315
+        width: 15
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_43
+      rect:
+        serializedVersion: 2
+        x: 546
+        y: 321
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_44
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 288
+        width: 21
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_45
+      rect:
+        serializedVersion: 2
+        x: 495
+        y: 288
+        width: 15
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_46
+      rect:
+        serializedVersion: 2
+        x: 513
+        y: 297
+        width: 30
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_47
+      rect:
+        serializedVersion: 2
+        x: 561
+        y: 303
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_48
+      rect:
+        serializedVersion: 2
+        x: 543
+        y: 288
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_49
+      rect:
+        serializedVersion: 2
+        x: 195
+        y: 195
+        width: 42
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_50
+      rect:
+        serializedVersion: 2
+        x: 399
+        y: 147
+        width: 24
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_51
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 96
+        width: 33
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_52
+      rect:
+        serializedVersion: 2
+        x: 441
+        y: 96
+        width: 33
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_53
+      rect:
+        serializedVersion: 2
+        x: 387
+        y: 48
+        width: 45
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_54
+      rect:
+        serializedVersion: 2
+        x: 435
+        y: 48
+        width: 45
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: placeholder_55
+      rect:
+        serializedVersion: 2
+        x: 483
+        y: 48
+        width: 45
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+  spritePackingTag: 
+  userData: 

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a7c25e63e2a26d746a16b5641a411dfb
+guid: 41bc2180224cfcb42900d643921b5ffb
 TextureImporter:
   serializedVersion: 2
   mipmaps:
@@ -16,7 +16,7 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: .25
     normalMapFilter: 0
-  isReadable: 1
+  isReadable: 0
   grayScaleToAlpha: 0
   generateCubemap: 0
   seamlessCubemap: 0
@@ -37,11 +37,7 @@ TextureImporter:
   spritePivot: {x: .5, y: .5}
   spritePixelsToUnits: 100
   alphaIsTransparency: 1
-<<<<<<< HEAD:Assets/Resources/Tilemaps/dirtgrass.png.meta
-  textureType: 5
-=======
   textureType: 8
->>>>>>> master:Assets/dirtgrass.png.meta
   buildTargetSettings: []
   spriteSheet:
     sprites: []
