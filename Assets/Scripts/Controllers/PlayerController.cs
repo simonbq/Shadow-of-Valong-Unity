@@ -3,14 +3,22 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 
+    //Public variables
 	public float movementSpeed = 2f;
 	public float interactionDistance = 0.5f;
 
+    //Public sounds
+    public AudioClip hitSound;
+    public AudioClip walkSound;
+    //
+
     private bool justDroppedObject = false;
 	private GameObject grabbedObject = null;
+    protected float speedModifier = 1.0f;
 	private GameObject heldObject = null;
 	private Vector2 currentDirection = -Vector2.up;
 	protected Animator animator;
+
 
 	// Use this for initialization
 	void Start () {
@@ -54,6 +62,7 @@ public class PlayerController : MonoBehaviour {
 
                     //Push & pull
                     if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Grabbable")){
+                        speedModifier = 0.6f;
                         hit.collider.gameObject.SendMessage("StartGrabbing", transform);
                         grabbedObject = hit.collider.gameObject;
                     }
@@ -72,6 +81,7 @@ public class PlayerController : MonoBehaviour {
                 {
                     grabbedObject.SendMessage("StopGrabbing", transform);
                     grabbedObject = null;
+                    speedModifier = 1.0f;
                 }
             }
 
@@ -97,7 +107,7 @@ public class PlayerController : MonoBehaviour {
 		float horizontalInput = Input.GetAxis ("Horizontal");
 		float verticalInput = Input.GetAxis ("Vertical");
 		//Movement
-		transform.Translate (horizontalInput * movementSpeed * Time.deltaTime, verticalInput*movementSpeed * Time.deltaTime, 0);
+		transform.Translate (horizontalInput * movementSpeed * speedModifier * Time.deltaTime, verticalInput * movementSpeed * speedModifier * Time.deltaTime, 0);
 		if(horizontalInput != 0 || verticalInput != 0){
 			animator.SetFloat("SpeedX", horizontalInput);
 			animator.SetFloat("SpeedY", verticalInput);
