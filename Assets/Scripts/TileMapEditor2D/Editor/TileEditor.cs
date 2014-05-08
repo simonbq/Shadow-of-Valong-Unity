@@ -12,6 +12,7 @@ public class TileEditor : EditorWindow {
 	private Sprite selectedSprite;
 	private int selectedSpriteId = 0;
 	private bool placeObjects = false;
+	private bool solidObjects = false;
 	private int tileLayer = 0;
 	private int prevSpriteId = -1;
 	private int selectedTileId = 0;
@@ -59,6 +60,7 @@ public class TileEditor : EditorWindow {
 		}
 
 		placeObjects = EditorGUILayout.Toggle ("Place tiles", placeObjects);
+		solidObjects = EditorGUILayout.Toggle ("Solid", solidObjects);
 		tileLayer = EditorGUILayout.IntField ("Layer", tileLayer);
 		selectedSpriteId = EditorGUILayout.IntPopup (selectedSpriteId, tileNames, index);
 
@@ -238,6 +240,11 @@ public class TileEditor : EditorWindow {
 
 					Grid.toggleRect(false);
 					selecting = false;
+
+					if(solidObjects)
+					{
+						repaintGrid ();
+					}
 				}
 				break;
 			}
@@ -263,6 +270,21 @@ public class TileEditor : EditorWindow {
 		lockAll(true);
 		placeObjects = false;
 		GameObject.DestroyImmediate (gridGameObject);
+	}
+
+	private void repaintGrid()
+	{
+		var w = grid.width;
+		var h = grid.height;
+		var v = grid.visible;
+
+		GameObject.DestroyImmediate (gridGameObject);
+		gridGameObject = new GameObject ("Grid");
+		gridGameObject.AddComponent<Grid>();
+
+		grid.width = w;
+		grid.height = h;
+		grid.visible = v;
 	}
 
 	private Vector3 editorToWorld(SceneView sceneView)
@@ -425,8 +447,15 @@ public class TileEditor : EditorWindow {
 		var renderer = created.GetComponent<SpriteRenderer>();
 		renderer.sprite = selectedSprite;
 		renderer.sortingOrder = tileLayer;
+		renderer.material = (Material)Resources.Load ("Materials/TileMaterial", typeof(Material));
 		var tid = created.GetComponent<Tile> ();
 		tid.tileID = selectedTileId;
+
+		if(solidObjects == true)
+		{
+			created.AddComponent<BoxCollider2D> ();
+			SceneView.RepaintAll();
+		}
 	}
 
 	private float move(float val, float snap)
