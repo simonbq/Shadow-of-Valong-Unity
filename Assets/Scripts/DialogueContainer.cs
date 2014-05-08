@@ -19,4 +19,10 @@ public class DialogueContainer{
             return serializer.Deserialize(stream) as DialogueContainer;
         }
     }
+
+    public Dialogue getDialogue(int id){
+        return Dialogues[id];
+    }
+
+    
 }

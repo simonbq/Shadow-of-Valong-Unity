@@ -12,4 +12,11 @@ public class Dialogue{
     [XmlArrayItem(typeof(Text), ElementName = "Text")]
     public List<Text> Texts = new List<Text>();
 
+    public string getText(int textId){
+        return Texts[textId].value;
+    }
+
+    public int getSpeakerId(int textId){
+        return Texts[textId].SpeakerId;
+    }
 }
