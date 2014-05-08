@@ -41,9 +41,9 @@ public class GameController : MonoBehaviour {
     	if(inDialogue){
             //Debug.Log(dialogues.Dialogues[currentDialogue].Texts.Count);
     		if(currentText < dialogues.Dialogues[currentDialogue].Texts.Count){
-                string dialogueText = replaceVariables(dialogues.Dialogues[currentDialogue].Texts[currentText].value);
+                string dialogueText = replaceVariables(dialogues.getDialogue(currentDialogue).getText(currentText));
 
-                string speakerId = replaceSpeakerId(dialogues.Dialogues[currentDialogue].Texts[currentText].SpeakerId);
+                string speakerId = replaceSpeakerId(dialogues.getDialogue(currentDialogue).getSpeakerId(currentText));
 
 				GUI.Label((new Rect((Screen.width/2)-(dialogueTexture.width/2), Screen.height-dialogueTexture.height-100, dialogueTexture.width, dialogueTexture.height)),  dialogueTexture);
 				GUI.Label((new Rect((Screen.width/2)-(dialogueTexture.width/2)+100, Screen.height-dialogueTexture.height-20, dialogueTexture.width, dialogueTexture.height)), speakerId + " says: ");
