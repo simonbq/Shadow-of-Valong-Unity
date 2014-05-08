@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml;
 using System.Xml.Serialization;
 using System.IO;
 
@@ -33,4 +34,33 @@ public class DialogueContainer{
     }
 
     
+}
+
+public class Dialogue
+{
+    [XmlArray(ElementName = "Texts")]
+    [XmlArrayItem(typeof(Text), ElementName = "Text")]
+    public List<Text> Texts = new List<Text>();
+
+    public string getText(int textId)
+    {
+        return Texts[textId].value;
+    }
+
+    public int getSpeakerId(int textId)
+    {
+        return Texts[textId].SpeakerId;
+    }
+}
+
+public class Text
+{
+    [XmlAttribute("speakerId")]
+    public int SpeakerId;
+
+    [XmlAttribute("value")]
+    public string value;
+
+    [XmlElement("Text")]
+    public string mText;
 }
