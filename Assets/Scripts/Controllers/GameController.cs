@@ -4,7 +4,7 @@ public class GameController : MonoBehaviour {
 
 
 	//Gamestate
-    public enum GameState { GAME, PAUSED, MAINMENU, MAP };
+    public enum GameState { GAME, PAUSED, MAINMENU, MAP, QUESTMENU };
     public static GameState gameState = GameState.GAME;
     
     //Public variables accessible through editor
