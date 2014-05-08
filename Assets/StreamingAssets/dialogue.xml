@@ -1,25 +1,28 @@
-<DialogueCollection>
+<?xml version="1.0" encoding="Windows-1252"?>
+<DialogueCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Dialogues>
     <Dialogue>
-    	<Texts>
-		    <Text speakerId="1" value="Hello there!"></Text>
-		    <Text speakerId="1" value="Aren't you that hero everyone is talking about?"></Text>
-	      <Text speakerId="0" value="Sure am! My name is {PlayerName}."></Text>
+      <Texts>
+        <Text speakerId="1" value="assfaggots" />
+        <Text speakerId="1" value="Aren't you that hero everyone is talking about?" />
+        <Text speakerId="0" value="Sure am! My name is {PlayerName}." />
+        <Text speakerId="0" value="So now, why don't you fuck off?" />
       </Texts>
     </Dialogue>
     <Dialogue>
-    	<Texts>
-    		<Text speakerId="1" value="Aren't you that hero everyone is talking about?"></Text>
-    	</Texts>
-    </Dialogue>
-    <Dialogue>
-    	<Texts>
-    		<Text speakerId="2" value="I like cheese."></Text>
-    	</Texts>
+      <Texts>
+        <Text speakerId="1" value="Aren't you that hero everyone is talking about?" />
+      </Texts>
     </Dialogue>
     <Dialogue>
       <Texts>
-        <Text speakerId="3" value="Woof! Woof!"></Text>
+        <Text speakerId="2" value="I like cheese." />
+      </Texts>
+    </Dialogue>
+    <Dialogue>
+      <Texts>
+        <Text speakerId="3" value="Woof! Woof!" />
+        <Text speakerId="3" value="IM A FUCKING DOG MOTHERFUCKER!" />
       </Texts>
     </Dialogue>
   </Dialogues>
