@@ -447,6 +447,7 @@ public class TileEditor : EditorWindow {
 		var renderer = created.GetComponent<SpriteRenderer>();
 		renderer.sprite = selectedSprite;
 		renderer.sortingOrder = tileLayer;
+		renderer.material = (Material)Resources.Load ("Materials/TileMaterial", typeof(Material));
 		var tid = created.GetComponent<Tile> ();
 		tid.tileID = selectedTileId;
 
