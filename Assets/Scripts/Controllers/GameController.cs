@@ -73,7 +73,7 @@ public class GameController : MonoBehaviour {
         }
     }
     
-    string replaceSpeakerId(int id){
+    public static string replaceSpeakerId(int id){
     	string oldName = string.Empty + id;
     	string name = oldName.Replace("0", "Link");
 		name = name.Replace("1", "Gertrude");

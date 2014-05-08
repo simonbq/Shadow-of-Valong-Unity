@@ -12,6 +12,10 @@ public class DialogueEditor : EditorWindow {
 	private string[] dialogueNames;
 	private int selectedId;
 
+	//FULKOD :(
+	private string[] speakerNames = new string[4];
+	private int[] speakerIds = new int[4];
+
 	private bool changed = false;
 	private Vector2 scrollPos = new Vector2();
 	private DialogueContainer prevC;
@@ -38,7 +42,9 @@ public class DialogueEditor : EditorWindow {
 		EditorGUILayout.BeginScrollView (scrollPos);
 		for(int i = 0; i < c.getDialogue(selectedId).Texts.Count; i++)
 		{
-			c.getDialogue(selectedId).Texts[i].SpeakerId = EditorGUILayout.IntField("Speaker-ID", c.getDialogue(selectedId).Texts[i].SpeakerId); //should be intpopup later with possible names
+			c.getDialogue(selectedId).Texts[i].SpeakerId = EditorGUILayout.IntPopup(c.getDialogue(selectedId).Texts[i].SpeakerId,
+			                                                                        speakerNames,
+			                                                                        speakerIds);
 			c.getDialogue(selectedId).Texts[i].value = EditorGUILayout.TextField("Text", c.getDialogue(selectedId).Texts[i].value);
 			if(prevC.getDialogue(selectedId).Texts[i] != c.getDialogue(selectedId).Texts[i])
 			{
@@ -90,6 +96,13 @@ public class DialogueEditor : EditorWindow {
 		{
 			dialogueIds[i] = i;
 			dialogueNames[i] = "Dialogue ID " + i;
+		}
+
+		//let the fulkod commence
+		for(int i = 0; i < 4; i++)
+		{
+			speakerIds[i] = i;
+			speakerNames[i] = GameController.replaceSpeakerId(i);
 		}
 	}
 }
