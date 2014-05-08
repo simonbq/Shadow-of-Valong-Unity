@@ -20,6 +20,14 @@ public class DialogueContainer{
         }
     }
 
+    public void Save(string path){
+        var serializer = new XmlSerializer(typeof(DialogueContainer));
+        using (var stream = new FileStream(System.IO.Path.Combine(Application.streamingAssetsPath, path), FileMode.Create)){
+            serializer.Serialize(stream, this);
+        }
+    }
+
+
     public Dialogue getDialogue(int id){
         return Dialogues[id];
     }

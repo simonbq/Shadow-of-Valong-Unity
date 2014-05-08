@@ -1,23 +1,23 @@
 <DialogueCollection>
   <Dialogues>
-    <Dialogue id="0">
+    <Dialogue>
     	<Texts>
 		    <Text speakerId="1" value="Hello there!"></Text>
 		    <Text speakerId="1" value="Aren't you that hero everyone is talking about?"></Text>
 	      <Text speakerId="0" value="Sure am! My name is {PlayerName}."></Text>
       </Texts>
     </Dialogue>
-    <Dialogue id="1">
+    <Dialogue>
     	<Texts>
     		<Text speakerId="1" value="Aren't you that hero everyone is talking about?"></Text>
     	</Texts>
     </Dialogue>
-    <Dialogue id="2">
+    <Dialogue>
     	<Texts>
     		<Text speakerId="2" value="I like cheese."></Text>
     	</Texts>
     </Dialogue>
-    <Dialogue id="3">
+    <Dialogue>
       <Texts>
         <Text speakerId="3" value="Woof! Woof!"></Text>
       </Texts>
