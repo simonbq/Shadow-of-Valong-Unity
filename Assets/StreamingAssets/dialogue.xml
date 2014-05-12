@@ -3,10 +3,11 @@
   <Dialogues>
     <Dialogue>
       <Texts>
-        <Text speakerId="1" value="assfaggots" />
+        <Text speakerId="1" value="Hello." />
         <Text speakerId="1" value="Aren't you that hero everyone is talking about?" />
-        <Text speakerId="0" value="Sure am! My name is {PlayerName}. {PlayerName}{PlayerName}{PlayerName}{PlayerName}{PlayerName}" />
+        <Text speakerId="0" value="NO! My name is {PlayerName}. {PlayerName}{PlayerName}{PlayerName}{PlayerName}{PlayerName}" />
         <Text speakerId="0" value="So now, why don't you fuck off?" />
+        <Text speakerId="1" value="okay.jpg" />
       </Texts>
     </Dialogue>
     <Dialogue>

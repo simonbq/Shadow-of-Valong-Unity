@@ -20,7 +20,7 @@ public class DialogueEditor : EditorWindow {
 	private bool changed = false;
 	private Vector2 scrollPos = new Vector2();
 
-	[MenuItem("Edit/Dialogue/Dialogue Editor")]
+	[MenuItem("Edit/Game Data/Dialogue Editor")]
 	static void Init()
 	{
 		var window = (DialogueEditor)EditorWindow.GetWindow(typeof(DialogueEditor));
