@@ -1,39 +1,49 @@
 <QuestCollection>
   <QuestTrees>
 	  <QuestTree name="Growing up!">
-		<Quests>
-		  <Quest started="true" id="0" name="Get the stick" description="get the god damn stick">
-			<Objectives>
-			  <Objective text="Slay ten wolves" type="Counter" goalCount="10" currentCount="0" completed="true" />
-			  <Objective text="Talk to mom" type="Boolean" completed="false" />
-			  <Objective text="Do a 360" type="Boolean" completed="true" />
-			</Objectives>
-		  </Quest>
-		  <Quest started="false" id="1" name="Talk to mom" description="Should be obvious, shouldn't it?">
-			<Objectives>
-			  <Objective text="Talk to mom" type="Boolean" completed="true" />
-			</Objectives>
-		  </Quest>
-		  <Quest started="false" id="2" name="Go out the door" description="Stop reading the description. The name tells you everything you need to know.">
-			<Objectives>
-			  <Objective text="Go out" type="Boolean" completed="false" />
-			</Objectives>
-		  </Quest>
-		</Quests>
+		  <Quests>
+		    <Quest started="true" id="0" name="Get the stick" description="get the god damn stick">
+			  <Objectives>
+			    <Objective text="Slay ten wolves" type="Counter" goalCount="10" currentCount="0" completed="true" />
+			    <Objective text="Talk to mom" type="Boolean" completed="false" />
+			    <Objective text="Do a 360" type="Boolean" completed="true" />
+			  </Objectives>
+		    </Quest>
+		    <Quest started="false" id="1" name="Talk to mom" description="Should be obvious, shouldn't it?">
+			  <Objectives>
+			    <Objective text="Talk to mom" type="Boolean" completed="true" />
+			  </Objectives>
+		    </Quest>
+		    <Quest started="false" id="2" name="Go out the door" description="Stop reading the description. The name tells you everything you need to know.">
+			  <Objectives>
+			    <Objective text="Go out" type="Boolean" completed="false" />
+			  </Objectives>
+		    </Quest>
+		  </Quests>
 	  </QuestTree>
 	  <QuestTree name="Become a farmer!">
-		<Quests>
-		  <Quest started="false" id="3" name="Milk the cow" description="Squirt, squirt">
-			<Objectives>
-			  <Objective text="Interact with the cow" type="Boolean" completed="false" />
-			</Objectives>
-		  </Quest>
-		  <Quest started="false" id="4" name="Move the chicken" description="Not the cock.">
-			<Objectives>
-			  <Objective text="Move chicken" type="Boolean" completed="false" />
-			</Objectives>
-		  </Quest>
-		</Quests>
+		  <Quests>
+		    <Quest started="false" id="3" name="Milk the cow" description="Squirt, squirt">
+			  <Objectives>
+			    <Objective text="Interact with the cow" type="Boolean" completed="false" />
+			  </Objectives>
+		    </Quest>
+		    <Quest started="false" id="4" name="Move the chicken" description="Not the cock.">
+			  <Objectives>
+			    <Objective text="Move chicken" type="Boolean" completed="false" />
+			  </Objectives>
+		    </Quest>
+		  </Quests>
 	  </QuestTree>
+    <QuestTree name="Calle's misfortune">
+      <Quests>
+        <Quest started="false" id="5" name="Cheddar for Calle" description="Calle would like some cheese.">
+          <Objectives>
+            <Objective text="Get cheese" type="Counter" goalCount="3" currentCount="0" completed="false" />
+            <Objective text="Deliver the cheese" type="Boolean" completed="false" />
+          </Objectives>
+        </Quest>
+      </Quests>
+    </QuestTree>
   </QuestTrees>
 </QuestCollection>

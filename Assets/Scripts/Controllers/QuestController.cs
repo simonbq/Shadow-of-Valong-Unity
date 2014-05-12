@@ -24,7 +24,10 @@ public class QuestController : MonoBehaviour {
 	}
 	public void startQuest(int questId){
 		Quest quest = getQuest(questId);
-		quest.Started = true;
+        if (!quest.Started){
+            quest.Started = true;
+
+        }
 	}
 	
 	public bool questStarted(int questId){
