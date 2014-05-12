@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour {
             if (Input.GetButtonDown("Inventory"))
             {
                 /*B button*/
-                //Inventory
+                //Unknown
             }
             if (Input.GetButtonDown("Interact"))
             {
@@ -84,13 +84,17 @@ public class PlayerController : MonoBehaviour {
                     speedModifier = 1.0f;
                 }
             }
-
-            if (Input.GetButtonDown("Map"))
-            {
-                /*Y button*/
-                //Map
-
-            }
+            
+			if (Input.GetButtonDown("Map"))
+			{
+				/*Y button*/
+				//Map
+				if(GameController.gameState == GameController.GameState.GAME){
+					GameController.gameState = GameController.GameState.QUESTMENU;
+				}else{
+					GameController.gameState = GameController.GameState.GAME;
+				}
+			}
 
             Debug.DrawRay(transform.position, currentDirection, Color.red);
         }
