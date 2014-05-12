@@ -10,7 +10,8 @@ public class DialogueEditor : EditorWindow {
 
 	private int[] dialogueIds;
 	private string[] dialogueNames;
-	private int selectedId;
+	private int selectedId = 0;
+	private int prevId = -1;
 
 	//FULKOD :(
 	private string[] speakerNames = new string[4];
@@ -18,7 +19,6 @@ public class DialogueEditor : EditorWindow {
 
 	private bool changed = false;
 	private Vector2 scrollPos = new Vector2();
-	private DialogueContainer prevC;
 
 	[MenuItem("Edit/Dialogue/Dialogue Editor")]
 	static void Init()
@@ -30,12 +30,19 @@ public class DialogueEditor : EditorWindow {
 
 	void OnEnable()
 	{
-		reloadDialogues ();
+		loadDialogues ();
 	}
 
 	void OnGUI()
 	{
 		selectedId = EditorGUILayout.IntPopup (selectedId, dialogueNames, dialogueIds);
+		if(selectedId == c.Dialogues.Count)
+		{
+			c.Dialogues.Add (new Dialogue());
+			reloadDialogues();
+			selectedId = c.Dialogues.Count - 1;
+			changed = true;
+		}
 
 		EditorGUILayout.Space ();
 
@@ -46,11 +53,6 @@ public class DialogueEditor : EditorWindow {
 			                                                                        speakerNames,
 			                                                                        speakerIds);
 			c.getDialogue(selectedId).Texts[i].value = EditorGUILayout.TextField("Text", c.getDialogue(selectedId).Texts[i].value);
-			if(prevC.getDialogue(selectedId).Texts[i] != c.getDialogue(selectedId).Texts[i])
-			{
-				changed = true;
-				prevC.getDialogue(selectedId).Texts[i] = c.getDialogue(selectedId).Texts[i];
-			}
 
 			if(GUILayout.Button("Delete"))
 			{
@@ -60,6 +62,16 @@ public class DialogueEditor : EditorWindow {
 			EditorGUILayout.Space ();
 		}
 		EditorGUILayout.EndScrollView ();
+
+		if(GUI.changed &&
+		   prevId == selectedId)
+		{
+			changed = true;
+		}
+
+		else{
+			prevId = selectedId;
+		}
 
 		if(GUILayout.Button ("Add line"))
 		{
@@ -86,16 +98,43 @@ public class DialogueEditor : EditorWindow {
 		}
 	}
 
-	private void reloadDialogues()
+	private void loadDialogues()
 	{
 		c = DialogueContainer.Load (Path.Combine (Application.streamingAssetsPath, "dialogue.xml"));
-		prevC = c;
-		dialogueIds = new int[c.Dialogues.Count];
-		dialogueNames = new string[c.Dialogues.Count];
-		for(int i = 0; i < c.Dialogues.Count; i++)
+		dialogueIds = new int[c.Dialogues.Count+1];
+		dialogueNames = new string[c.Dialogues.Count+1];
+		for(int i = 0; i < c.Dialogues.Count+1; i++)
 		{
 			dialogueIds[i] = i;
 			dialogueNames[i] = "Dialogue ID " + i;
+
+			if(i == c.Dialogues.Count)
+			{
+				dialogueNames[i] = "New dialogue...";
+			}
+		}
+
+		//let the fulkod commence
+		for(int i = 0; i < 4; i++)
+		{
+			speakerIds[i] = i;
+			speakerNames[i] = DialogueController.replaceSpeakerId(i);
+		}
+	}
+
+	private void reloadDialogues()
+	{
+		dialogueIds = new int[c.Dialogues.Count+1];
+		dialogueNames = new string[c.Dialogues.Count+1];
+		for(int i = 0; i < c.Dialogues.Count+1; i++)
+		{
+			dialogueIds[i] = i;
+			dialogueNames[i] = "Dialogue ID " + i;
+			
+			if(i == c.Dialogues.Count)
+			{
+				dialogueNames[i] = "New dialogue...";
+			}
 		}
 
 		//let the fulkod commence

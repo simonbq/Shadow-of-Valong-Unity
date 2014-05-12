@@ -26,5 +26,10 @@
         <Text speakerId="3" value="IM A FUCKING DOG MOTHERFUCKER!" />
       </Texts>
     </Dialogue>
+    <Dialogue>
+      <Texts>
+        <Text speakerId="0" value="This is an empty dialogue. YIKES!" />
+      </Texts>
+    </Dialogue>
   </Dialogues>
 </DialogueCollection>
