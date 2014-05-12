@@ -30,12 +30,19 @@ public class DialogueEditor : EditorWindow {
 
 	void OnEnable()
 	{
-		reloadDialogues ();
+		loadDialogues ();
 	}
 
 	void OnGUI()
 	{
 		selectedId = EditorGUILayout.IntPopup (selectedId, dialogueNames, dialogueIds);
+		if(selectedId == c.Dialogues.Count)
+		{
+			c.Dialogues.Add (new Dialogue());
+			reloadDialogues();
+			selectedId = c.Dialogues.Count - 1;
+			changed = true;
+		}
 
 		EditorGUILayout.Space ();
 
@@ -86,18 +93,46 @@ public class DialogueEditor : EditorWindow {
 		}
 	}
 
-	private void reloadDialogues()
+	private void loadDialogues()
 	{
 		c = DialogueContainer.Load (Path.Combine (Application.streamingAssetsPath, "dialogue.xml"));
 		prevC = c;
-		dialogueIds = new int[c.Dialogues.Count];
-		dialogueNames = new string[c.Dialogues.Count];
-		for(int i = 0; i < c.Dialogues.Count; i++)
+		dialogueIds = new int[c.Dialogues.Count+1];
+		dialogueNames = new string[c.Dialogues.Count+1];
+		for(int i = 0; i < c.Dialogues.Count+1; i++)
 		{
 			dialogueIds[i] = i;
 			dialogueNames[i] = "Dialogue ID " + i;
+
+			if(i == c.Dialogues.Count)
+			{
+				dialogueNames[i] = "New dialogue...";
+			}
 		}
 
+		//let the fulkod commence
+		for(int i = 0; i < 4; i++)
+		{
+			speakerIds[i] = i;
+			speakerNames[i] = GameController.replaceSpeakerId(i);
+		}
+	}
+
+	private void reloadDialogues()
+	{
+		dialogueIds = new int[c.Dialogues.Count+1];
+		dialogueNames = new string[c.Dialogues.Count+1];
+		for(int i = 0; i < c.Dialogues.Count+1; i++)
+		{
+			dialogueIds[i] = i;
+			dialogueNames[i] = "Dialogue ID " + i;
+			
+			if(i == c.Dialogues.Count)
+			{
+				dialogueNames[i] = "New dialogue...";
+			}
+		}
+		
 		//let the fulkod commence
 		for(int i = 0; i < 4; i++)
 		{
