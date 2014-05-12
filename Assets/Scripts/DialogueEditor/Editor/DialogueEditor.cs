@@ -136,12 +136,12 @@ public class DialogueEditor : EditorWindow {
 				dialogueNames[i] = "New dialogue...";
 			}
 		}
-		
+
 		//let the fulkod commence
 		for(int i = 0; i < 4; i++)
 		{
 			speakerIds[i] = i;
-			speakerNames[i] = GameController.replaceSpeakerId(i);
+			speakerNames[i] = DialogueController.replaceSpeakerId(i);
 		}
 	}
 }
