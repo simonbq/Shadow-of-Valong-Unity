@@ -17,6 +17,7 @@
     <Dialogue>
       <Texts>
         <Text speakerId="2" value="I like cheese." />
+        <Text speakerId="0" value="Please bring me all the cheese you can find!" />
       </Texts>
     </Dialogue>
     <Dialogue>

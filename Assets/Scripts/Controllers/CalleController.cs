@@ -15,5 +15,6 @@ public class CalleController : MonoBehaviour {
 	
 	void Interact(){
 		DialogueController.startDialogue(2);
+        QuestController.startQuest(5);
 	}
 }
