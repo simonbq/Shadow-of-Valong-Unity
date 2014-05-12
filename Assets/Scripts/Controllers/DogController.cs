@@ -29,7 +29,7 @@ public class DogController : MonoBehaviour {
 	}
 	
 	void Interact(){
-        GameController.startDialogue(3);
+        DialogueController.startDialogue(3);
 		running = true;
 	}
 }

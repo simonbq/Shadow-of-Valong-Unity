@@ -102,7 +102,7 @@ public class DialogueEditor : EditorWindow {
 		for(int i = 0; i < 4; i++)
 		{
 			speakerIds[i] = i;
-			speakerNames[i] = GameController.replaceSpeakerId(i);
+			speakerNames[i] = DialogueController.replaceSpeakerId(i);
 		}
 	}
 }

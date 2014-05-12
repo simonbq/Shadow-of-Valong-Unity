@@ -14,6 +14,6 @@ public class CalleController : MonoBehaviour {
 	}
 	
 	void Interact(){
-		GameController.startDialogue(2);
+		DialogueController.startDialogue(2);
 	}
 }

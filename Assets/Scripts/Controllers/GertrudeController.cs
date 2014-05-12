@@ -12,6 +12,6 @@ public class GertrudeController : MonoBehaviour {
 	}
 
     void Interact(){
-        GameController.startDialogue(0);
+        DialogueController.startDialogue(0);
     }
 }
