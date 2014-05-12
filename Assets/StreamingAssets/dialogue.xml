@@ -17,7 +17,7 @@
     <Dialogue>
       <Texts>
         <Text speakerId="2" value="I like cheese." />
-        <Text speakerId="0" value="Please bring me all the cheese you can find!" />
+        <Text speakerId="2" value="Please bring me all the cheese you can find!" />
       </Texts>
     </Dialogue>
     <Dialogue>
@@ -29,6 +29,18 @@
     <Dialogue>
       <Texts>
         <Text speakerId="0" value="This is an empty dialogue. YIKES!" />
+      </Texts>
+    </Dialogue>
+    <Dialogue>
+      <Texts>
+        <Text speakerId="2" value="Where is my cheese?!" />
+        <Text speakerId="0" value="I'm working on it." />
+      </Texts>
+    </Dialogue>
+    <Dialogue>
+      <Texts>
+        <Text speakerId="2" value="Thank you for all this marvelous cheese!" />
+        <Text speakerId="2" value="Of course, the feeling of doing a good deed should be reward enough for a youngling like you." />
       </Texts>
     </Dialogue>
   </Dialogues>

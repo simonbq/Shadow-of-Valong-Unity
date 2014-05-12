@@ -20,8 +20,15 @@ public class QuestController : MonoBehaviour {
             GUI.Label(new Rect(0,0,100,20), getQuest(5).Name);
             GUI.Label(new Rect(0, 20, 350, 20), getQuest(5).Description);
 
-			//if(questStarted(5))
-			GUI.Label(new Rect(0,40,100,20), "" + getQuest(5).Started);
+            
+			if(getQuest(5).Started) {
+                GUI.Label(new Rect(0, 40, 100, 20), ("Started: " + getQuest(5).Objectives[0].CurrentCount + "/" + getQuest(5).Objectives[0].GoalCount));
+            }
+            if(!getQuest(5).Started) {
+                GUI.Label(new Rect(0, 40, 100, 20), "Not started");
+            }
+
+			
 		}
 	}
 	public static void startQuest(int questId){
@@ -32,12 +39,12 @@ public class QuestController : MonoBehaviour {
         }
 	}
 	
-	public bool questStarted(int questId){
+	public static bool questStarted(int questId){
 		Quest quest = getQuest(questId);
 		return quest.Started;
 	}
 	
-	public bool questCompleted(int questId){
+	public static bool questCompleted(int questId){
 		bool completed = true;
 		Quest quest = getQuest(questId);
 		if(quest == null){
@@ -55,6 +62,26 @@ public class QuestController : MonoBehaviour {
 			return false;
 		}
 	}
+    
+    public static bool objectiveCompleted(int questId, int objectiveId){
+        Quest quest = getQuest(questId);
+        return quest.Objectives[objectiveId].Completed;
+    }
+
+    public static void completeObjective(int questId, int objectiveId){
+        Quest quest = getQuest(questId);
+        quest.Objectives[objectiveId].Completed = true;
+    }
+
+    public static void addToObjective(int questId, int objectiveId, int count){
+        Quest quest = getQuest(questId);
+        if((quest.Objectives[objectiveId].CurrentCount + count) >= quest.Objectives[objectiveId].GoalCount){
+            quest.Objectives[objectiveId].CurrentCount = quest.Objectives[objectiveId].GoalCount;
+            quest.Objectives[objectiveId].Completed = true;
+        }else{
+            quest.Objectives[objectiveId].CurrentCount += count;
+        }
+    }
 	
 	private static Quest getQuest(int questId){
 		Quest returnQuest = null;

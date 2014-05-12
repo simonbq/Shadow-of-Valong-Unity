@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PickUp : MonoBehaviour {
+public class CheeseController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
@@ -12,8 +12,4 @@ public class PickUp : MonoBehaviour {
 	void Update () {
 	
 	}
-
-    void Interact() {
-        QuestController.addToObjective(5, 0, 1);
-    }
 }
