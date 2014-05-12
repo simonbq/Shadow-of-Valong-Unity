@@ -20,6 +20,7 @@ public class QuestEditor : EditorWindow {
 	private int prevQuestId = -1;
 	private string changeQuestTreeName;
 	private string changeQuestName;
+	private string questDescription;
 
 	[MenuItem("Edit/Game Data/Quest Editor")]
 
@@ -59,16 +60,17 @@ public class QuestEditor : EditorWindow {
 		{
 			changeQuestName = q[selectedQuestId].Name;
 			prevQuestId = selectedQuestId;
+			questDescription = q[selectedQuestId].Description;
 		}
 
 		changeQuestName = EditorGUILayout.TextField ("Change name", changeQuestName);
+		questDescription = EditorGUILayout.TextArea (questDescription, GUILayout.Height (100));
 		if(GUILayout.Button ("Apply"))
 		{
 			q[selectedQuestId].Name = changeQuestName;
+			q[selectedQuestId].Description = questDescription;
 			questNames[selectedQuestId] = q[selectedQuestId].Name + " (Quest-ID " + q[selectedQuestId].Id + ")"; 
 		}
-		
-		EditorGUILayout.Space ();
 	}
 	
 	private void loadQuestTrees()
@@ -95,5 +97,8 @@ public class QuestEditor : EditorWindow {
 			questIds[i] = i;
 			questNames[i] = q[i].Name + " (Quest-ID " + q[i].Id + ")";
 		}
+
+		selectedQuestId = 0;
+		questDescription = q[0].Description;
 	}
 }
