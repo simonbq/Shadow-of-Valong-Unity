@@ -38,8 +38,8 @@ public class DialogueController : MonoBehaviour {
                 string speakerId = replaceSpeakerId(dialogues.getDialogue(currentDialogue).getSpeakerId(currentText));
 
                 GUI.Label((new Rect((Screen.width / 2) - (dialogueTexture.width / 2), Screen.height - dialogueTexture.height - 100, dialogueTexture.width, dialogueTexture.height)), dialogueTexture);
-                GUI.Label((new Rect((Screen.width / 2) - (dialogueTexture.width / 2) + 100, Screen.height - dialogueTexture.height - 20, dialogueTexture.width, dialogueTexture.height)), speakerId + " says: ");
-                GUI.Label((new Rect((Screen.width / 2) - (dialogueTexture.width / 2) + 100, Screen.height - dialogueTexture.height, dialogueTexture.width, dialogueTexture.height)), dialogueText);
+                GUI.Label((new Rect((Screen.width / 2) - (dialogueTexture.width / 2), Screen.height - dialogueTexture.height - 20, dialogueTexture.width, dialogueTexture.height)), speakerId + " says: ");
+                GUI.Label((new Rect((Screen.width / 2) - (dialogueTexture.width / 2), Screen.height - dialogueTexture.height, dialogueTexture.width, dialogueTexture.height)), dialogueText);
             }else{
                 inDialogue = false;
                 GameController.gameState = GameController.GameState.GAME;
