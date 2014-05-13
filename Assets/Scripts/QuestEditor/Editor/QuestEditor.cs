@@ -47,19 +47,19 @@ public class QuestEditor : EditorWindow {
 		selectedQuestTreeId = EditorGUILayout.IntPopup ("Quest tree", selectedQuestTreeId, questTreeNames, questTreeIds);
 		if(prevQuestTreeId != selectedQuestTreeId)
 		{
-			if(selectedQuestTreeId == qt.QuestTrees.Count)
-			{
-				qt.QuestTrees.Add(new QuestTree());
-				qt.QuestTrees [selectedQuestTreeId].Name = "Unnamed quest tree";
-				Debug.Log("Added " + qt.QuestTrees[selectedQuestTreeId].Name);
-				loadQuestTrees ();
-				selectedQuestTreeId = qt.QuestTrees.Count-1;
-			}
 			changeQuestTreeName = qt.QuestTrees [selectedQuestTreeId].Name;
 			prevQuestTreeId = selectedQuestTreeId;
 			loadQuests (selectedQuestTreeId);
 		}
-
+		if(selectedQuestTreeId == qt.QuestTrees.Count)
+		{
+			qt.QuestTrees.Add(new QuestTree());
+			qt.QuestTrees [selectedQuestTreeId].Name = "Unnamed quest tree";
+			Debug.Log("Added " + qt.QuestTrees[selectedQuestTreeId].Name);
+			reloadQuestTrees ();
+			selectedQuestTreeId = qt.QuestTrees.Count-1;
+		}
+		
 		changeQuestTreeName = EditorGUILayout.TextField ("Change name", changeQuestTreeName);
 		if(GUILayout.Button ("Apply"))
 		{
@@ -150,9 +150,14 @@ public class QuestEditor : EditorWindow {
 	private void loadQuestTrees()
 	{
 		qt = QuestContainer.Load(Path.Combine (Application.streamingAssetsPath, "quest.xml"));
+		reloadQuestTrees ();
+	}
+
+	private void reloadQuestTrees()
+	{
 		questTreeNames = new string[qt.QuestTrees.Count+1];
 		questTreeIds = new int[qt.QuestTrees.Count+1];
-
+		
 		for(int i = 0; i < qt.QuestTrees.Count+1; i++)
 		{
 			questTreeIds[i] = i;
@@ -160,7 +165,7 @@ public class QuestEditor : EditorWindow {
 			{
 				questTreeNames[i] = "New quest tree";
 			}
-
+			
 			else{
 				questTreeNames[i] = qt.QuestTrees[i].Name + " (Quest tree-ID " + i + ")";
 			}
