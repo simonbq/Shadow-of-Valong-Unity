@@ -7,7 +7,7 @@ public class DialogueController : MonoBehaviour {
     public Texture2D dialogueTexture;
 
     //Private variables
-    private DialogueContainer dialogues;
+    private DialogueContainer dialogues = new DialogueContainer();
     private static bool inDialogue = false;
     private static int currentDialogue;
     private static int currentText;

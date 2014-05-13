@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Serialization;
 using System.IO;
+using System;
 
 [XmlRoot("QuestCollection")]
 public class QuestContainer{
@@ -20,6 +21,7 @@ public class QuestContainer{
 	}
 	
 	public void Save(string path){
+        Environment.SetEnvironmentVariable("MONO_REFLECTION_SERIALIZER", "yes");
 		var serializer = new XmlSerializer(typeof(QuestContainer));
 		using (var stream = new StreamWriter(System.IO.Path.Combine(Application.streamingAssetsPath, path))){
 			serializer.Serialize(stream, this);
