@@ -23,6 +23,8 @@ public class QuestEditor : EditorWindow {
 	private string changeQuestName;
 	private string questDescription;
 
+	private Vector2 scrollPos = new Vector2();
+
 	[MenuItem("Edit/Game Data/Quest Editor")]
 
 	static void Init()
@@ -45,6 +47,14 @@ public class QuestEditor : EditorWindow {
 		selectedQuestTreeId = EditorGUILayout.IntPopup ("Quest tree", selectedQuestTreeId, questTreeNames, questTreeIds);
 		if(prevQuestTreeId != selectedQuestTreeId)
 		{
+			if(selectedQuestTreeId == qt.QuestTrees.Count)
+			{
+				qt.QuestTrees.Add(new QuestTree());
+				qt.QuestTrees [selectedQuestTreeId].Name = "Unnamed quest tree";
+				Debug.Log("Added " + qt.QuestTrees[selectedQuestTreeId].Name);
+				loadQuestTrees ();
+				selectedQuestTreeId = qt.QuestTrees.Count-1;
+			}
 			changeQuestTreeName = qt.QuestTrees [selectedQuestTreeId].Name;
 			prevQuestTreeId = selectedQuestTreeId;
 			loadQuests (selectedQuestTreeId);
@@ -61,6 +71,14 @@ public class QuestEditor : EditorWindow {
 		selectedQuestId = EditorGUILayout.IntPopup ("Quest", selectedQuestId, questNames, questIds);
 		if(prevQuestId != selectedQuestId)
 		{
+			if(selectedQuestId == q.Count)
+			{
+				q.Add (new Quest());
+				q[selectedQuestId].Name = "Unnamed quest";
+				q[selectedQuestId].Id = getNewQuestId();
+				loadQuests (selectedQuestTreeId);
+				selectedQuestId = q.Count-1;
+			}
 			changeQuestName = q[selectedQuestId].Name;
 			prevQuestId = selectedQuestId;
 			questDescription = q[selectedQuestId].Description;
@@ -76,7 +94,7 @@ public class QuestEditor : EditorWindow {
 		}
 
 		EditorGUILayout.Space ();
-
+		scrollPos = EditorGUILayout.BeginScrollView (scrollPos);
 		for(int i = 0; i < q[selectedQuestId].Objectives.Count; i++)
 		{
 			int typeindex = new int();
@@ -100,33 +118,72 @@ public class QuestEditor : EditorWindow {
 			}
 
 			q[selectedQuestId].Objectives[i].Text = EditorGUILayout.TextField("Objective", q[selectedQuestId].Objectives[i].Text);
+			if(GUILayout.Button ("Delete"))
+			{
+				q[selectedQuestId].Objectives.RemoveAt (i);
+			}
+
 			EditorGUILayout.Space ();
 		}
+		EditorGUILayout.EndScrollView ();
+
+		if(GUILayout.Button ("Add Objective"))
+		{
+			q[selectedQuestId].Objectives.Add (new Objective());
+		}
+	}
+
+	private int getNewQuestId()
+	{
+		int id = 0;
+		for(int i = 0; i < qt.QuestTrees.Count; i++)
+		{
+			for(int o = 0; o < qt.QuestTrees[i].Quests.Count; o++)
+			{
+				id++;
+			}
+		}
+		id--;
+		return id;
 	}
 	
 	private void loadQuestTrees()
 	{
 		qt = QuestContainer.Load(Path.Combine (Application.streamingAssetsPath, "quest.xml"));
-		questTreeNames = new string[qt.QuestTrees.Count];
-		questTreeIds = new int[qt.QuestTrees.Count];
+		questTreeNames = new string[qt.QuestTrees.Count+1];
+		questTreeIds = new int[qt.QuestTrees.Count+1];
 
-		for(int i = 0; i < qt.QuestTrees.Count; i++)
+		for(int i = 0; i < qt.QuestTrees.Count+1; i++)
 		{
 			questTreeIds[i] = i;
-			questTreeNames[i] = qt.QuestTrees[i].Name + " (Quest tree-ID " + i + ")";
+			if(i == qt.QuestTrees.Count)
+			{
+				questTreeNames[i] = "New quest tree";
+			}
+
+			else{
+				questTreeNames[i] = qt.QuestTrees[i].Name + " (Quest tree-ID " + i + ")";
+			}
 		}
 	}
 
 	private void loadQuests(int qtid)
 	{
 		q = qt.QuestTrees [qtid].Quests;
-		questNames = new string[q.Count];
-		questIds = new int[q.Count];
+		questNames = new string[q.Count+1];
+		questIds = new int[q.Count+1];
 
-		for(int i = 0; i < q.Count; i++)
+		for(int i = 0; i < q.Count+1; i++)
 		{
 			questIds[i] = i;
-			questNames[i] = q[i].Name + " (Quest-ID " + q[i].Id + ")";
+			if(i == q.Count)
+			{
+				questNames[i] = "New quest";
+			}
+
+			else{
+				questNames[i] = q[i].Name + " (Quest-ID " + q[i].Id + ")";
+			}
 		}
 
 		selectedQuestId = 0;
