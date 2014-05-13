@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DialogueCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Dialogues>
+    <Dialogue>
+      <Texts>
+        <Text speakerId="1" value="Aren't you that hero everyone is talking about?" />
+        <Text speakerId="0" value="Sure am! My name is {PlayerName}. {PlayerName}{PlayerName}{PlayerName}{PlayerName}{PlayerName}" />
+      </Texts>
+    </Dialogue>
+    <Dialogue>
+      <Texts>
+        <Text speakerId="1" value="Aren't you that hero everyone is talking about?" />
+      </Texts>
+    </Dialogue>
+    <Dialogue>
+      <Texts>
+        <Text speakerId="2" value="I like cheese." />
+        <Text speakerId="2" value="Please bring me all the cheese you can find!" />
+      </Texts>
+    </Dialogue>
+    <Dialogue>
+      <Texts>
+        <Text speakerId="3" value="Woof! Woof!" />
+        <Text speakerId="3" value="IM A FUCKING DOG MOTHERFUCKER!" />
+      </Texts>
+    </Dialogue>
+    <Dialogue>
+      <Texts>
+        <Text speakerId="0" value="This is an empty dialogue. YIKES!" />
+      </Texts>
+    </Dialogue>
+    <Dialogue>
+      <Texts>
+        <Text speakerId="2" value="Where is my cheese?!" />
+        <Text speakerId="0" value="I'm working on it." />
+      </Texts>
+    </Dialogue>
+    <Dialogue>
+      <Texts>
+        <Text speakerId="2" value="Thank you for all this marvelous cheese!" />
+        <Text speakerId="2" value="Of course, the feeling of doing a good deed should be reward enough for a youngling like yourself." />
+        <Text speakerId="0" value="..." />
+      </Texts>
+    </Dialogue>
+  </Dialogues>
+</DialogueCollection>

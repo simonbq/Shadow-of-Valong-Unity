@@ -21,7 +21,7 @@ public class QuestContainer{
 	
 	public void Save(string path){
 		var serializer = new XmlSerializer(typeof(QuestContainer));
-		using (var stream = new FileStream(System.IO.Path.Combine(Application.streamingAssetsPath, path), FileMode.Create)){
+		using (var stream = new StreamWriter(System.IO.Path.Combine(Application.streamingAssetsPath, path))){
 			serializer.Serialize(stream, this);
 		}
 	}

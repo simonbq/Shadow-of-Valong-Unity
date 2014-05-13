@@ -84,21 +84,26 @@ public class PlayerController : MonoBehaviour {
                     speedModifier = 1.0f;
                 }
             }
-            
-			if (Input.GetButtonDown("Map"))
-			{
-				/*Y button*/
-				//Map
-				if(GameController.gameState == GameController.GameState.GAME){
-					GameController.gameState = GameController.GameState.QUESTMENU;
-				}else{
-					GameController.gameState = GameController.GameState.GAME;
-				}
-			}
 
             Debug.DrawRay(transform.position, currentDirection, Color.red);
         }
         justDroppedObject = false;
+
+        if (Input.GetButtonDown("Map")){
+            /*Y button*/
+            //Ingame menus
+            switch(GameController.gameState){
+                case GameController.GameState.GAME:
+                    GameController.gameState = GameController.GameState.QUESTMENU;
+                    break;
+                case GameController.GameState.QUESTMENU:
+                    GameController.gameState = GameController.GameState.GAME;
+                    break;
+                default:
+                    GameController.gameState = GameController.GameState.GAME;
+                    break;
+            }
+        }
 	}
 
 	void FixedUpdate(){
