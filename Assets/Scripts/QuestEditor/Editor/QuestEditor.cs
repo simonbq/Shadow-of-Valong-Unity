@@ -13,6 +13,7 @@ public class QuestEditor : EditorWindow {
 	private List<Quest> q;
 	private string[] questNames;
 	private int[] questIds;
+	private string[] objectiveTypes = new string[2];
 
 	private int selectedQuestTreeId = 0;
 	private int prevQuestTreeId = -1;
@@ -27,19 +28,21 @@ public class QuestEditor : EditorWindow {
 	static void Init()
 	{
 		var window = (QuestEditor)EditorWindow.GetWindow(typeof(QuestEditor));
-		window.minSize = new Vector2 (240, 320);
+		window.minSize = new Vector2 (240, 480);
 		window.title = "Quest Editor";
 	}
 
 	void OnEnable()
 	{
 		loadQuestTrees ();
-		loadQuests (0);
+		loadQuests (selectedQuestTreeId);
+		objectiveTypes [0] = "Boolean";
+		objectiveTypes [1] = "Counter";
 	}
 
 	void OnGUI()
 	{
-		selectedQuestTreeId = EditorGUILayout.IntPopup (selectedQuestTreeId, questTreeNames, questTreeIds);
+		selectedQuestTreeId = EditorGUILayout.IntPopup ("Quest tree", selectedQuestTreeId, questTreeNames, questTreeIds);
 		if(prevQuestTreeId != selectedQuestTreeId)
 		{
 			changeQuestTreeName = qt.QuestTrees [selectedQuestTreeId].Name;
@@ -55,7 +58,7 @@ public class QuestEditor : EditorWindow {
 		}
 
 		EditorGUILayout.Space ();
-		selectedQuestId = EditorGUILayout.IntPopup (selectedQuestId, questNames, questIds);
+		selectedQuestId = EditorGUILayout.IntPopup ("Quest", selectedQuestId, questNames, questIds);
 		if(prevQuestId != selectedQuestId)
 		{
 			changeQuestName = q[selectedQuestId].Name;
@@ -64,12 +67,40 @@ public class QuestEditor : EditorWindow {
 		}
 
 		changeQuestName = EditorGUILayout.TextField ("Change name", changeQuestName);
-		questDescription = EditorGUILayout.TextArea (questDescription, GUILayout.Height (100));
+		questDescription = EditorGUILayout.TextArea (questDescription, GUILayout.Height (80));
 		if(GUILayout.Button ("Apply"))
 		{
 			q[selectedQuestId].Name = changeQuestName;
 			q[selectedQuestId].Description = questDescription;
 			questNames[selectedQuestId] = q[selectedQuestId].Name + " (Quest-ID " + q[selectedQuestId].Id + ")"; 
+		}
+
+		EditorGUILayout.Space ();
+
+		for(int i = 0; i < q[selectedQuestId].Objectives.Count; i++)
+		{
+			int typeindex = new int();
+			switch(q[selectedQuestId].Objectives[i].Type)
+			{
+			case "Boolean":
+				typeindex = 0;
+				break;
+
+			case "Counter":
+				typeindex = 1;
+				break;
+			}
+
+			typeindex = EditorGUILayout.Popup ("Objective type", typeindex, objectiveTypes);
+			q[selectedQuestId].Objectives[i].Type = objectiveTypes[typeindex];
+
+			if(q[selectedQuestId].Objectives[i].Type == "Counter")
+			{
+				q[selectedQuestId].Objectives[i].GoalCount = EditorGUILayout.IntField("Goal count", q[selectedQuestId].Objectives[i].GoalCount);
+			}
+
+			q[selectedQuestId].Objectives[i].Text = EditorGUILayout.TextField("Objective", q[selectedQuestId].Objectives[i].Text);
+			EditorGUILayout.Space ();
 		}
 	}
 	
@@ -99,6 +130,7 @@ public class QuestEditor : EditorWindow {
 		}
 
 		selectedQuestId = 0;
+		changeQuestName = q[0].Name;
 		questDescription = q[0].Description;
 	}
 }
