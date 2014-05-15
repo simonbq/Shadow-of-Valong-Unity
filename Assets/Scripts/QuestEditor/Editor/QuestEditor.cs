@@ -50,6 +50,8 @@ public class QuestEditor : EditorWindow {
 			qt.QuestTrees.Add(new QuestTree());
 			qt.QuestTrees [selectedQuestTreeId].Name = "Unnamed quest tree";
 			reloadQuestTrees ();
+            loadQuests(selectedQuestTreeId);
+            reloadQuestTrees();
             addNewQuest();
 		}
 
@@ -137,6 +139,7 @@ public class QuestEditor : EditorWindow {
         q.Add(new Quest());
         q[selectedQuestId].Name = "Unnamed quest";
         q[selectedQuestId].Id = getNewQuestId();
+        Debug.Log("Added quest-ID " + q[selectedQuestId].Id);
         loadQuests(selectedQuestTreeId);
         selectedQuestId = q.Count - 1;
     }
