@@ -10,7 +10,6 @@ public class QuestEditor : EditorWindow {
 	private string[] questTreeNames;
 	private int[] questTreeIds;
 
-	private List<Quest> q;
 	private string[] questNames;
 	private int[] questIds;
 	private string[] objectiveTypes = new string[2];
@@ -24,6 +23,8 @@ public class QuestEditor : EditorWindow {
 	private string questDescription;
 
 	private Vector2 scrollPos = new Vector2();
+
+    private bool changed = false;
 
 	[MenuItem("Edit/Game Data/Quest Editor")]
 
@@ -53,12 +54,12 @@ public class QuestEditor : EditorWindow {
             loadQuests(selectedQuestTreeId);
             reloadQuestTrees();
             addNewQuest();
+            changed = true;
 		}
 
         if (prevQuestTreeId != selectedQuestTreeId)
         {
             changeQuestTreeName = qt.QuestTrees[selectedQuestTreeId].Name;
-            prevQuestTreeId = selectedQuestTreeId;
             loadQuests(selectedQuestTreeId);
         }
 		
@@ -73,32 +74,32 @@ public class QuestEditor : EditorWindow {
 		selectedQuestId = EditorGUILayout.IntPopup ("Quest", selectedQuestId, questNames, questIds);
 		if(prevQuestId != selectedQuestId)
 		{
-			if(selectedQuestId == q.Count)
+            if (selectedQuestId == qt.QuestTrees[selectedQuestTreeId].Quests.Count)
 			{
                 addNewQuest();
+                changed = true;
 			}
-			changeQuestName = q[selectedQuestId].Name;
-			prevQuestId = selectedQuestId;
-			questDescription = q[selectedQuestId].Description;
+            changeQuestName = qt.QuestTrees[selectedQuestTreeId].Quests[selectedQuestId].Name;
+            questDescription = qt.QuestTrees[selectedQuestTreeId].Quests[selectedQuestId].Description;
 		}
 
 		changeQuestName = EditorGUILayout.TextField ("Change name", changeQuestName);
 		questDescription = EditorGUILayout.TextArea (questDescription, GUILayout.Height (80));
 		if(GUILayout.Button ("Apply"))
 		{
-			q[selectedQuestId].Name = changeQuestName;
-			q[selectedQuestId].Description = questDescription;
-			questNames[selectedQuestId] = q[selectedQuestId].Name + " (Quest-ID " + q[selectedQuestId].Id + ")"; 
+            qt.QuestTrees[selectedQuestTreeId].Quests[selectedQuestId].Name = changeQuestName;
+            qt.QuestTrees[selectedQuestTreeId].Quests[selectedQuestId].Description = questDescription;
+            questNames[selectedQuestId] = qt.QuestTrees[selectedQuestTreeId].Quests[selectedQuestId].Name + " (Quest-ID " + qt.QuestTrees[selectedQuestTreeId].Quests[selectedQuestId].Id + ")"; 
 		}
 
 		EditorGUILayout.Space ();
 		scrollPos = EditorGUILayout.BeginScrollView (scrollPos);
         if (qt.QuestTrees[selectedQuestTreeId].Quests.Count > 0)
         {
-            for (int i = 0; i < q[selectedQuestId].Objectives.Count; i++)
+            for (int i = 0; i < qt.QuestTrees[selectedQuestTreeId].Quests[selectedQuestId].Objectives.Count; i++)
             {
                 int typeindex = new int();
-                switch (q[selectedQuestId].Objectives[i].Type)
+                switch (qt.QuestTrees[selectedQuestTreeId].Quests[selectedQuestId].Objectives[i].Type)
                 {
                     case "Boolean":
                         typeindex = 0;
@@ -110,17 +111,19 @@ public class QuestEditor : EditorWindow {
                 }
 
                 typeindex = EditorGUILayout.Popup("Objective type", typeindex, objectiveTypes);
-                q[selectedQuestId].Objectives[i].Type = objectiveTypes[typeindex];
+                qt.QuestTrees[selectedQuestTreeId].Quests[selectedQuestId].Objectives[i].Type = objectiveTypes[typeindex];
 
-                if (q[selectedQuestId].Objectives[i].Type == "Counter")
+                if (qt.QuestTrees[selectedQuestTreeId].Quests[selectedQuestId].Objectives[i].Type == "Counter")
                 {
-                    q[selectedQuestId].Objectives[i].GoalCount = EditorGUILayout.IntField("Goal count", q[selectedQuestId].Objectives[i].GoalCount);
+                    qt.QuestTrees[selectedQuestTreeId].Quests[selectedQuestId].Objectives[i].GoalCount = EditorGUILayout.IntField("Goal count", 
+                        qt.QuestTrees[selectedQuestTreeId].Quests[selectedQuestId].Objectives[i].GoalCount);
                 }
 
-                q[selectedQuestId].Objectives[i].Text = EditorGUILayout.TextField("Objective", q[selectedQuestId].Objectives[i].Text);
+                qt.QuestTrees[selectedQuestTreeId].Quests[selectedQuestId].Objectives[i].Text = EditorGUILayout.TextField("Objective", 
+                    qt.QuestTrees[selectedQuestTreeId].Quests[selectedQuestId].Objectives[i].Text);
                 if (GUILayout.Button("Delete"))
                 {
-                    q[selectedQuestId].Objectives.RemoveAt(i);
+                    qt.QuestTrees[selectedQuestTreeId].Quests[selectedQuestId].Objectives.RemoveAt(i);
                 }
 
                 EditorGUILayout.Space();
@@ -128,20 +131,47 @@ public class QuestEditor : EditorWindow {
         }
 		EditorGUILayout.EndScrollView ();
 
+        if (GUI.changed &&
+            prevQuestId == selectedQuestId &&
+            prevQuestTreeId == selectedQuestTreeId)
+        {
+            changed = true;
+        }
+
+        prevQuestTreeId = selectedQuestTreeId;
+        prevQuestId = selectedQuestId;
+
 		if(GUILayout.Button ("Add Objective"))
 		{
-			q[selectedQuestId].Objectives.Add (new Objective());
+            qt.QuestTrees[selectedQuestTreeId].Quests[selectedQuestId].Objectives.Add(new Objective());
 		}
-	}
 
+        if (GUILayout.Button("Save"))
+        {
+            qt.Save(Path.Combine(Application.streamingAssetsPath, "quest.xml"));
+            changed = false;
+        }
+    }
+
+    void OnDestroy()
+    {
+        if (changed &&
+            EditorUtility.DisplayDialog("Unsaved changes!",
+                                        "You have some unsaved changes. Do you want to save?",
+                                        "Save",
+                                        "Quit without saving"))
+        {
+            qt.Save(Path.Combine(Application.streamingAssetsPath, "quest.xml"));
+        }
+    }
     private void addNewQuest()
     {
-        q.Add(new Quest());
-        q[selectedQuestId].Name = "Unnamed quest";
-        q[selectedQuestId].Id = getNewQuestId();
-        Debug.Log("Added quest-ID " + q[selectedQuestId].Id);
+        qt.QuestTrees[selectedQuestTreeId].Quests.Add(new Quest());
+        qt.QuestTrees[selectedQuestTreeId].Quests[selectedQuestId].Name = "Unnamed quest";
+        qt.QuestTrees[selectedQuestTreeId].Quests[selectedQuestId].Id = getNewQuestId();
+        Debug.Log("Added quest-ID " + qt.QuestTrees[selectedQuestTreeId].Quests[selectedQuestId].Id);
         loadQuests(selectedQuestTreeId);
-        selectedQuestId = q.Count - 1;
+        selectedQuestId = qt.QuestTrees[selectedQuestTreeId].Quests.Count - 1;
     }
 
 	private int getNewQuestId()
@@ -185,28 +215,27 @@ public class QuestEditor : EditorWindow {
 
 	private void loadQuests(int qtid)
 	{
-		q = qt.QuestTrees [qtid].Quests;
-		questNames = new string[q.Count+1];
-		questIds = new int[q.Count+1];
+        questNames = new string[qt.QuestTrees[selectedQuestTreeId].Quests.Count + 1];
+        questIds = new int[qt.QuestTrees[selectedQuestTreeId].Quests.Count + 1];
 
-		for(int i = 0; i < q.Count+1; i++)
+        for (int i = 0; i < qt.QuestTrees[selectedQuestTreeId].Quests.Count + 1; i++)
 		{
 			questIds[i] = i;
-			if(i == q.Count)
+            if (i == qt.QuestTrees[selectedQuestTreeId].Quests.Count)
 			{
 				questNames[i] = "New quest";
 			}
 
 			else{
-				questNames[i] = q[i].Name + " (Quest-ID " + q[i].Id + ")";
+                questNames[i] = qt.QuestTrees[selectedQuestTreeId].Quests[i].Name + " (Quest-ID " + qt.QuestTrees[selectedQuestTreeId].Quests[i].Id + ")";
 			}
 		}
 
 		selectedQuestId = 0;
-        if (q.Count > 0)
+        if (qt.QuestTrees[selectedQuestTreeId].Quests.Count > 0)
         {
-            changeQuestName = q[0].Name;
-            questDescription = q[0].Description;
+            changeQuestName = qt.QuestTrees[selectedQuestTreeId].Quests[0].Name;
+            questDescription = qt.QuestTrees[selectedQuestTreeId].Quests[0].Description;
         }
 
         else{
