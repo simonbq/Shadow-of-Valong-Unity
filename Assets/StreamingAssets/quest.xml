@@ -27,6 +27,7 @@
         <Quest id="3" name="Milk the cow" description="Squirt, squirt" started="false">
           <Objectives>
             <Objective text="Interact with the cow" type="Boolean" goalCount="0" currentCount="0" completed="false" />
+            <Objective text="Now pleasure it." type="Boolean" goalCount="0" currentCount="0" completed="false" />
           </Objectives>
         </Quest>
         <Quest id="4" name="Move the chicken" description="Not the cock." started="false">
@@ -42,6 +43,24 @@
           <Objectives>
             <Objective text="Get cheese" type="Counter" goalCount="3" currentCount="0" completed="false" />
             <Objective text="Deliver the cheese" type="Boolean" goalCount="0" currentCount="0" completed="false" />
+          </Objectives>
+        </Quest>
+      </Quests>
+    </QuestTree>
+    <QuestTree name="A student quest">
+      <Quests>
+        <Quest id="6" name="Get drunk" description="It's time to get WAAAAAASTED!" started="false">
+          <Objectives>
+            <Objective text="Go to Systembolaget" type="Boolean" goalCount="0" currentCount="0" completed="false" />
+            <Objective text="Aquire beer" type="Counter" goalCount="24" currentCount="0" completed="false" />
+            <Objective text="Drink beer" type="Boolean" goalCount="0" currentCount="0" completed="false" />
+          </Objectives>
+        </Quest>
+        <Quest id="7" name="Study" description="BOOOOOORING" started="false">
+          <Objectives>
+            <Objective text="Miss the lecture" type="Boolean" goalCount="0" currentCount="0" completed="false" />
+            <Objective text="Do it tomorrow" type="Boolean" goalCount="0" currentCount="0" completed="false" />
+            <Objective text="Do all assignments in one week" type="Counter" goalCount="5" currentCount="0" completed="false" />
           </Objectives>
         </Quest>
       </Quests>
