@@ -3,11 +3,13 @@ using System.Collections;
 
 public class QuestController : MonoBehaviour {
 
-	private static QuestContainer quests;
+	private static QuestContainer quests = new QuestContainer();
+
+    private static string filePath = "quest.xml";
 
 	// Use this for initialization
 	void Start () {
-		quests = QuestContainer.Load("quest.xml");
+        quests = QuestContainer.Load(filePath);
 	}
 	
 	// Update is called once per frame
@@ -27,15 +29,12 @@ public class QuestController : MonoBehaviour {
             if(!getQuest(5).Started) {
                 GUI.Label(new Rect(0, 40, 100, 20), "Not started");
             }
-
-			
 		}
 	}
 	public static void startQuest(int questId){
 		Quest quest = getQuest(questId);
         if (!quest.Started){
             quest.Started = true;
-
         }
 	}
 	
@@ -81,6 +80,7 @@ public class QuestController : MonoBehaviour {
         }else{
             quest.Objectives[objectiveId].CurrentCount += count;
         }
+        
     }
 	
 	private static Quest getQuest(int questId){

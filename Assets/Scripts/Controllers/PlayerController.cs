@@ -33,10 +33,10 @@ public class PlayerController : MonoBehaviour {
                 /*A button*/
                 //Attack
             }
-            if (Input.GetButtonDown("Inventory"))
+            if (Input.GetButtonDown("AbilityToggle"))
             {
                 /*B button*/
-                //Unknown
+                //Toggle abilities on and off
             }
             if (Input.GetButtonDown("Interact"))
             {
@@ -89,7 +89,7 @@ public class PlayerController : MonoBehaviour {
         }
         justDroppedObject = false;
 
-        if (Input.GetButtonDown("Map")){
+        if (Input.GetButtonDown("Inventory")){
             /*Y button*/
             //Ingame menus
             switch(GameController.gameState){
