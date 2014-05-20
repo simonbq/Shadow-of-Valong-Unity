@@ -454,6 +454,7 @@ public class TileEditor : EditorWindow {
 		if(solidObjects == true)
 		{
 			created.AddComponent<BoxCollider2D> ();
+            created.layer = 11;
 			SceneView.RepaintAll();
 		}
 	}
