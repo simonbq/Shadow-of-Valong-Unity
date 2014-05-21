@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Units>
+    <Unit id="0" name="Link" description="" prefab="Player.prefab" alignment="Neutral"
+          type="Human" element="Neutral" atk_mode="Melee" threat="0" damage="1"
+          health="0" speed="1" dmg_red="0" rarity="Unique">
+      <Drops>
+      </Drops>
+      <Powers>
+      </Powers>
+    </Unit>
+    <Unit id="1" name="Gertrude" description="" prefab="Gertrude.prefab" alignment="Friendly"
+          type="Human" element="Neutral" atk_mode="Melee" threat="0" damage="1"
+          health="1" speed="1" dmg_red="0" rarity="Unique">
+      <Drops>
+      </Drops>
+      <Powers>
+      </Powers>
+    </Unit>
+    <Unit id="2" name="Calle" description="" prefab="Calle.prefab" alignment="Friendly"
+          type="Human" element="Neutral" atk_mode="Melee" threat="0" damage="1"
+          health="1" speed="1" dmg_red="0" rarity="Unique">
+      <Drops>
+      </Drops>
+      <Powers>
+      </Powers>
+    </Unit>
+    <Unit id="3" name="Dog" description="" prefab="Dog.prefab" alignment="Friendly"
+          type="Animal" element="Neutral" atk_mode="Melee" threat="0" damage="1"
+          health="1" speed="1" dmg_red="0" rarity="Unique">
+      <Drops>
+      </Drops>
+      <Powers>
+      </Powers>
+    </Unit>
+    <Unit id="4" name="Crawler" description="" prefab="Crawler.prefab" alignment="Hostile" 
+          type="Animal" element="Neutral" atk_mode="Melee" threat="1" damage="1"
+          health="1" speed="1" dmg_red="0" rarity="Common">
+      <Drops>
+      </Drops>
+      <Powers>
+        <Power name="Skittish" />
+      </Powers>
+    </Unit>
+  </Units>
+</UnitCollection>
