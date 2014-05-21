@@ -20,7 +20,7 @@ public class DialogueEditor : EditorWindow {
 	private bool changed = false;
 	private Vector2 scrollPos = new Vector2();
 
-	[MenuItem("Edit/Dialogue/Dialogue Editor")]
+	[MenuItem("Edit/Game Data/Dialogue Editor")]
 	static void Init()
 	{
 		var window = (DialogueEditor)EditorWindow.GetWindow(typeof(DialogueEditor));
@@ -46,13 +46,17 @@ public class DialogueEditor : EditorWindow {
 
 		EditorGUILayout.Space ();
 
-		EditorGUILayout.BeginScrollView (scrollPos);
+		scrollPos = EditorGUILayout.BeginScrollView (scrollPos);
 		for(int i = 0; i < c.getDialogue(selectedId).Texts.Count; i++)
 		{
 			c.getDialogue(selectedId).Texts[i].SpeakerId = EditorGUILayout.IntPopup(c.getDialogue(selectedId).Texts[i].SpeakerId,
 			                                                                        speakerNames,
 			                                                                        speakerIds);
-			c.getDialogue(selectedId).Texts[i].value = EditorGUILayout.TextField("Text", c.getDialogue(selectedId).Texts[i].value);
+			GUILayoutOption[] fieldoptions = new GUILayoutOption[2];
+			fieldoptions[0] = GUILayout.Width (position.width - 7);
+			fieldoptions[1] = GUILayout.Height (60);
+
+			c.getDialogue(selectedId).Texts[i].value = EditorGUILayout.TextArea (c.getDialogue(selectedId).Texts[i].value, fieldoptions);
 
 			if(GUILayout.Button("Delete"))
 			{
