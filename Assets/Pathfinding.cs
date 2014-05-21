@@ -10,13 +10,11 @@ public class Pathfinding : MonoBehaviour
 
     private List<Vector2> path = new List<Vector2>();
     private List<Vector2> debugPath = new List<Vector2>();
-    private List<Vector2> unpassable = new List<Vector2>();
+    private List<Vector2> debugPath2 = new List<Vector2>();
 
     // Use this for initialization
     void Start()
     {
-        findUnpassable();
-        Debug.Log("Added " + unpassable.Count);
         path = findPath();
     }
 
@@ -25,11 +23,11 @@ public class Pathfinding : MonoBehaviour
     {
         for (int i = 0; i < debugPath.Count - 1; i++)
         {
-            Debug.DrawLine(debugPath[i], debugPath[i] + new Vector2(0.1f, 0.1f));
+            Debug.DrawLine(debugPath[i], debugPath[i] - new Vector2(0.1f, 0.1f), Color.yellow);
         }
-        for (int i = 0; i < unpassable.Count - 1; i++)
+        for (int i = 0; i < debugPath2.Count - 1; i++)
         {
-            Debug.DrawLine(unpassable[i], unpassable[i] + new Vector2(0.1f, 0.1f), Color.blue);
+            Debug.DrawLine(debugPath2[i], debugPath2[i] - new Vector2(0.1f, 0.1f), Color.cyan);
         }
         for(int i = 0; i < path.Count-1; i++)
         {
@@ -37,16 +35,20 @@ public class Pathfinding : MonoBehaviour
         }
     }
 
-    private void findUnpassable()
+    private void findUnpassable(List<Node> closed)
     {
         GameObject[] g = FindObjectsOfType(typeof(GameObject)) as GameObject[];
         for (int i = 0; i < g.Length; i++)
         {
             if (g[i].layer == 11)
             {
-                unpassable.Add(new Vector2(g[i].transform.position.x, g[i].transform.position.y));
+                Node temp = new Node();
+                temp.position = grid(g[i].transform.position);
+                closed.Add(temp);
             }
         }
+
+        Debug.Log("Found " + closed.Count + " already closed!");
     }
 
     private List<Vector2> findPath()
@@ -59,8 +61,13 @@ public class Pathfinding : MonoBehaviour
         goal.position = grid(target.transform.position);
         open.Add(start);
 
-        while (open.Count != 0)
+        findUnpassable(closed);
+
+        int debug = 0;
+
+        while (open.Count != 0 && debug < testcount)
         {
+            debug++;
             Node node = findNode(open);
             open.Remove(node);
             closed.Add(node);
@@ -68,7 +75,7 @@ public class Pathfinding : MonoBehaviour
 
             if (node.position == goal.position)
             {
-                Debug.Log("SUCCESS!!!");
+                Debug.Log("SUCCESS!!! Only " + debug + " loops needed!!");
                 return resolvePath(node, start);
             }
 
@@ -78,7 +85,7 @@ public class Pathfinding : MonoBehaviour
                 if (!open.Exists(x => x.position == a.position))
                 {
                     open.Add(a);
-                    //Debug.Log("Added node " + a.position);
+                    Debug.Log("Doesnt already exist!");
                 }
 
                 else if (a.G < node.G)
@@ -86,7 +93,7 @@ public class Pathfinding : MonoBehaviour
                     a.G = node.G + a.dir;
                     a.F = a.G + a.H;
                     a.prevNode = node;
-                    //Debug.Log("Found better path!");
+                    Debug.Log("Found better path!");
                 }
             }
         }
@@ -122,8 +129,21 @@ public class Pathfinding : MonoBehaviour
         List<Node> adjacent = new List<Node>();
         foreach (var p in pos)
         {
-            if (!unpassable.Exists(x => x == p) &&
-                !closed.Exists(x => x.position == p))
+            Collider2D[] res = new Collider2D[1];
+            int hit = Physics2D.OverlapCircleNonAlloc(p + new Vector2(nodeSize / 2, nodeSize / 2), nodeSize / 2, res);
+            if (hit > 0)
+            {
+                
+            }
+            bool exists = false;
+            foreach (var no in closed)
+            {
+                if (no.position == p)
+                {
+                    exists = true;
+                }
+            }
+            if (!exists)
             {
                 Node temp = new Node();
                 temp.position = n.position + p;
@@ -143,13 +163,15 @@ public class Pathfinding : MonoBehaviour
                 temp.H = estimateH(temp, goal);
                 temp.F = temp.G + temp.H;
                 temp.prevNode = n;
-                
+
                 adjacent.Add(temp);
+                Debug.Log("Adding adjacent node");
             }
 
-            else if (unpassable.Exists(x => x == p))
+            else
             {
-                Debug.Log("YOU SHALL NOT PASS");
+                debugPath2.Add(p);
+                Debug.Log("Already closed or blocked!!!");
             }
         }
 
