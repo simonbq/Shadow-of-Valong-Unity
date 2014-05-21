@@ -57,7 +57,7 @@ public class DialogueController : MonoBehaviour {
 
     string replaceVariables(string dialogueText){
         if (dialogueText != null){
-            string newText = dialogueText.Replace("{PlayerName}", "Link");
+            string newText = dialogueText.Replace("{PlayerName}", UnitController.getName(0));
             return newText;
         }else{
             return dialogueText;
