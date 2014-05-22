@@ -12,11 +12,4 @@ public class PickUp : MonoBehaviour {
 	void Update () {
 	
 	}
-
-    void Interact() {
-        if (QuestController.questStarted(5)){
-            QuestController.addToObjective(5, 0, 1);
-            Destroy(gameObject);
-        }
-    }
 }

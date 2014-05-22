@@ -57,7 +57,7 @@ public class DialogueController : MonoBehaviour {
 
     string replaceVariables(string dialogueText){
         if (dialogueText != null){
-            string newText = dialogueText.Replace("{PlayerName}", "Link");
+            string newText = dialogueText.Replace("{PlayerName}", UnitController.getName(0));
             return newText;
         }else{
             return dialogueText;
@@ -65,13 +65,8 @@ public class DialogueController : MonoBehaviour {
     }
 
     public static string replaceSpeakerId(int id){
-        string oldName = string.Empty + id;
-        string name = oldName.Replace("0", "Link");
-        name = name.Replace("1", "Gertrude");
-        name = name.Replace("2", "Calle");
-        name = name.Replace("3", "Dog");
-
-        if (oldName.Equals(name, System.StringComparison.Ordinal)){
+        string name = UnitController.getName(id);
+        if (name == null){
             return string.Empty + "NPC_ID_" + id;
         }else{
             return name;
