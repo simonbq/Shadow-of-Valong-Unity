@@ -21,34 +21,19 @@ public class Pathfinding : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        for (int i = 0; i < debugPath.Count - 1; i++)
-        {
-            Debug.DrawLine(debugPath[i], debugPath[i] - new Vector2(0.1f, 0.1f), Color.yellow);
-        }
-        for (int i = 0; i < debugPath2.Count - 1; i++)
-        {
-            Debug.DrawLine(debugPath2[i], debugPath2[i] - new Vector2(0.1f, 0.1f), Color.cyan);
-        }
         for(int i = 0; i < path.Count-1; i++)
         {
             Debug.DrawLine(path[i], path[i+1], Color.green);
         }
     }
 
-    private void findUnpassable(List<Node> closed)
+    void OnDrawGizmos()
     {
-        GameObject[] g = FindObjectsOfType(typeof(GameObject)) as GameObject[];
-        for (int i = 0; i < g.Length; i++)
+        Gizmos.color = Color.red;
+        for (int i = 0; i < debugPath.Count - 1; i++)
         {
-            if (g[i].layer == 11)
-            {
-                Node temp = new Node();
-                temp.position = grid(g[i].transform.position);
-                closed.Add(temp);
-            }
+            Gizmos.DrawSphere(debugPath[i], 0.1f);
         }
-
-        Debug.Log("Found " + closed.Count + " already closed!");
     }
 
     private List<Vector2> findPath()
@@ -60,8 +45,6 @@ public class Pathfinding : MonoBehaviour
         start.position = grid(transform.position);
         goal.position = grid(target.transform.position);
         open.Add(start);
-
-        findUnpassable(closed);
 
         int debug = 0;
 
@@ -129,21 +112,10 @@ public class Pathfinding : MonoBehaviour
         List<Node> adjacent = new List<Node>();
         foreach (var p in pos)
         {
-            Collider2D[] res = new Collider2D[1];
-            int hit = Physics2D.OverlapCircleNonAlloc(p + new Vector2(nodeSize / 2, nodeSize / 2), nodeSize / 2, res);
-            if (hit > 0)
-            {
-                
-            }
-            bool exists = false;
-            foreach (var no in closed)
-            {
-                if (no.position == p)
-                {
-                    exists = true;
-                }
-            }
-            if (!exists)
+            RaycastHit2D[] a = new RaycastHit2D[1];
+            int hit = Physics2D.RaycastNonAlloc(n.position, p + new Vector2(0.1f, 0), a, nodeSize + 0.1f);
+            Debug.Log("Hits: " + hit);
+            if (!closed.Exists(x => x.position == p) && hit == 0)
             {
                 Node temp = new Node();
                 temp.position = n.position + p;
@@ -170,7 +142,6 @@ public class Pathfinding : MonoBehaviour
 
             else
             {
-                debugPath2.Add(p);
                 Debug.Log("Already closed or blocked!!!");
             }
         }
@@ -208,6 +179,7 @@ public class Pathfinding : MonoBehaviour
     {
         pos.x = nodeSize * Mathf.Round(pos.x / nodeSize);
         pos.y = nodeSize * Mathf.Round(pos.y / nodeSize);
+        pos += new Vector2(nodeSize / 2, -(nodeSize / 2));
         return pos;
     }
 }
