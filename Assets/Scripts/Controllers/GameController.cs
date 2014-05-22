@@ -3,7 +3,6 @@ using System.Collections;
 
 public class GameController : MonoBehaviour {
 
-
 	//Gamestate
     public enum GameState { GAME, PAUSED, MAINMENU, MAP, QUESTMENU };
     public static GameState gameState;
