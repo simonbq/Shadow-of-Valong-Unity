@@ -59,24 +59,24 @@ public class Pathfinding : MonoBehaviour
             if (node.position == goal.position)
             {
                 Debug.Log("SUCCESS!!! Only " + debug + " loops needed!!");
+                Debug.Log("OPEN = " +open.Count+ " CLOSED = " +closed.Count);
                 return resolvePath(node, start);
             }
 
             List<Node> adjacent = findAdjacent(node, goal, closed);
             foreach (var a in adjacent)
             {
-                if (!open.Exists(x => x.position == a.position))
-                {
-                    open.Add(a);
-                    Debug.Log("Doesnt already exist!");
-                }
-
-                else if (a.G < node.G)
+                if (!open.Exists(x => x.position == a.position) || node.G + a.dir < a.G)
                 {
                     a.G = node.G + a.dir;
                     a.F = a.G + a.H;
                     a.prevNode = node;
-                    Debug.Log("Found better path!");
+
+                    if (!open.Exists(x => x.position == a.position))
+                    {
+                        open.Add(a);
+                        Debug.Log("Doesnt already exist!");
+                    }
                 }
             }
         }
@@ -151,13 +151,13 @@ public class Pathfinding : MonoBehaviour
 
     private float estimateH(Node n, Node goal)
     {
-        return 10 * (Mathf.Abs(n.position.x + goal.position.x) + Mathf.Abs(n.position.y + goal.position.y));
+        return 10 * (Mathf.Abs(n.position.x - goal.position.x) + Mathf.Abs(n.position.y - goal.position.y));
     }
 
     private Node findNode(List<Node> open)
     {
         float lowest = Mathf.Infinity;
-        Node best = new Node();
+        Node best = null;
         foreach (var n in open)
         {
             if (n.F < lowest)
