@@ -14,6 +14,11 @@ public class GameController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update (){
-
+        //DEBUGGING ONLY; REMEMBER TO REMOVE
+        if (Input.GetButtonDown("LeftTrigger") && Input.GetButtonDown("RightTrigger"))
+        {
+            Debug.Log("CLEARED ALL PLAYER PREFS");
+            PlayerPrefs.DeleteAll();
+        }
 	}
 }
