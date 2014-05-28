@@ -4,6 +4,7 @@ using System.Collections;
 public class Tile : MonoBehaviour {
 	public int tileID;
 	public bool locked = false;
+    public bool dynamic = false;
 
 	void OnDrawGizmos()
 	{	

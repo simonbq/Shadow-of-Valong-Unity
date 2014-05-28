@@ -13,6 +13,7 @@ public class TileEditor : EditorWindow {
 	private int selectedSpriteId = 0;
 	private bool placeObjects = false;
 	private bool solidObjects = false;
+    private bool dynamicTiles = false;
 	private int tileLayer = 0;
 	private int prevSpriteId = -1;
 	private int selectedTileId = 0;
@@ -47,6 +48,10 @@ public class TileEditor : EditorWindow {
 	void OnGUI()
 	{
 		grid = gridGameObject.GetComponent<Grid>();
+        if (grid == null)
+        {
+            repaintGrid();
+        }
 		grid.visible = EditorGUILayout.Toggle("Show grid", grid.visible);
 		snapping = EditorGUILayout.Toggle ("Snap to grid", snapping);
 		grid.width = EditorGUILayout.FloatField("Snap X", grid.width);
@@ -61,6 +66,7 @@ public class TileEditor : EditorWindow {
 
 		placeObjects = EditorGUILayout.Toggle ("Place tiles", placeObjects);
 		solidObjects = EditorGUILayout.Toggle ("Solid", solidObjects);
+        dynamicTiles = EditorGUILayout.Toggle ("Dynamic", dynamicTiles);
 		tileLayer = EditorGUILayout.IntField ("Layer", tileLayer);
 		selectedSpriteId = EditorGUILayout.IntPopup (selectedSpriteId, tileNames, index);
 
@@ -121,6 +127,25 @@ public class TileEditor : EditorWindow {
 		{
 			replaceSelectedTile();
 		}
+
+        if (GUILayout.Button("Convert selected to dynamic tile(s)") &&
+           EditorUtility.DisplayDialog("Convert selected?",
+                                    "Selection will from now on be dynamic. This can not be undone.",
+                                    "Convert",
+                                    "Cancel"))
+        {
+            convertDynamic();
+        }
+
+
+        if (GUILayout.Button("Convert ALL tiles to new ordering system") && 
+            EditorUtility.DisplayDialog("Convert?", 
+		                            "WARNING! You may only do this ONCE, otherwise you can fuck up the level pretty bad.",
+		                            "Convert",
+		                            "Cancel"))
+        {
+            convertMap();
+        }
 	}
 
 	void OnDidOpenScene()
@@ -132,22 +157,30 @@ public class TileEditor : EditorWindow {
 
 	void Update()
 	{
-		if(snapping &&
+        if(snapping &&
 		   !EditorApplication.isPlaying &&
 		   Selection.transforms.Length > 0 &&
 		   Selection.transforms[0].position != prev)
 		{
-			foreach (var tf in Selection.transforms)
+            foreach (var tf in Selection.transforms)
 			{
 				var pos = tf.transform.position;
 				pos.x = move (pos.x, grid.width);
 				pos.y = move (pos.y, grid.height);
 				tf.transform.position = pos;
 
-				if(tf.tag == "Tile")
+				if(tf.tag == "Tile" &&
+                    tf.parent.name != "TileLayer_Dynamic")
 				{
 					tf.name = "Tile_" + pos.x + "x" + pos.y + "_" + tf.GetComponent<SpriteRenderer>().sortingOrder;
 				}
+
+                if (tf.parent.name == "TileLayer_Dynamic")
+                {
+                    var renderer = tf.GetComponent<SpriteRenderer>();
+                    renderer.sortingOrder = Mathf.RoundToInt((1 - pos.y + renderer.bounds.size.y) * 100);
+                    tf.name = "Tile_" + pos.x + "x" + pos.y + "_Dynamic";
+                }
 			}
 
 			prev = Selection.transforms[0].position;
@@ -189,6 +222,10 @@ public class TileEditor : EditorWindow {
 				else if(e.button == 1)
 				{
 					string name = "Tile_" + pos.x + "x" + pos.y + "_" + tileLayer;
+                    if (dynamicTiles)
+                    {
+                        name = "Tile_" + pos.x + "x" + pos.y + "_Dynamic";
+                    }
 					GameObject del = GameObject.Find(name);
 					if(del != null)
 					{
@@ -294,6 +331,24 @@ public class TileEditor : EditorWindow {
 		return sceneView.camera.ScreenPointToRay(mpos).origin;
 	}
 
+    private static void convertMap()
+    {
+        foreach (Transform c in masterParent.transform)
+        {
+            foreach (Transform cc in c.transform)
+            {
+                if (cc.tag == "Tile")
+                {
+                    if (c.name != "TileLayer_Dynamic")
+                    {
+                        var renderer = cc.GetComponent<SpriteRenderer>();
+                        renderer.sortingOrder *= 100;
+                    }
+                }
+            }
+        }
+    }
+
 	private void resetObjects()
 	{
 		gridGameObject = GameObject.Find ("Grid");
@@ -340,6 +395,46 @@ public class TileEditor : EditorWindow {
 		}
 	}
 
+    private void convertDynamic()
+    {
+        if (Selection.transforms.Length > 0)
+        {
+            foreach (var r in Selection.transforms)
+            {
+                if (r.tag == "Tile")
+                {
+                    masterParent = GameObject.Find("Tiles");
+                    if (masterParent == null)
+                    {
+                        masterParent = new GameObject("Tiles");
+                    }
+
+                    GameObject parentObject = GameObject.Find("TileLayer_Dynamic");
+                    if (parentObject == null)
+                    {
+                        parentObject = new GameObject("TileLayer_Dynamic");
+                        parentObject.transform.parent = masterParent.transform;
+                        parentObject.tag = "TileLayer";
+                    }
+
+                    string name = "Tile_" + r.transform.position.x + "x" + r.transform.position.y + "_Dynamic";
+
+                    GameObject delete = GameObject.Find(name);
+                    if (delete != null)
+                    {
+                        GameObject.DestroyImmediate(delete);
+                    }
+
+                    r.transform.parent = parentObject.transform;
+                    r.transform.name = name;
+                    r.transform.renderer.sortingOrder = tileLayer * 100;
+                    var renderer = r.GetComponent<SpriteRenderer>();
+                    renderer.sortingOrder = Mathf.RoundToInt((1 - r.transform.position.y + renderer.bounds.size.y) * 100);
+                }
+            }
+        }
+    }
+
 	private void replaceLayer()
 	{
 		if(Selection.transforms.Length > 0)
@@ -372,7 +467,7 @@ public class TileEditor : EditorWindow {
 
 					r.transform.parent = parentObject.transform;
 					r.transform.name = name;
-					r.transform.renderer.sortingOrder = tileLayer;
+					r.transform.renderer.sortingOrder = tileLayer * 100;
 				}
 			}
 		}
@@ -416,7 +511,8 @@ public class TileEditor : EditorWindow {
 
 	private void placeTile(Vector3 pos)
 	{
-		string name = "Tile_" + pos.x + "x" + pos.y + "_" + tileLayer;
+        string name = "Tile_" + pos.x + "x" + pos.y + "_" + tileLayer;
+        if (dynamicTiles) { name = "Tile_" + pos.x + "x" + pos.y + "_Dynamic"; }
 		GameObject created = GameObject.Find (name);
 		if(created != null)
 		{
@@ -428,25 +524,40 @@ public class TileEditor : EditorWindow {
 		{
 			masterParent = new GameObject("Tiles");
 		}
-		GameObject parentObject = GameObject.Find ("TileLayer_" +tileLayer);
-		if(parentObject == null)
-		{
-			parentObject = new GameObject("TileLayer_" +tileLayer);
-			parentObject.transform.parent = masterParent.transform;
-			parentObject.tag = "TileLayer";
-		}
+        GameObject parentObject = GameObject.Find("TileLayer_" + tileLayer);
+        if (!dynamicTiles)
+        {
+            if (parentObject == null)
+            {
+                parentObject = new GameObject("TileLayer_" + tileLayer);
+                parentObject.transform.parent = masterParent.transform;
+                parentObject.tag = "TileLayer";
+            }
+        }
+
+        else
+        {
+            parentObject = GameObject.Find("TileLayer_Dynamic");
+            if (parentObject == null)
+            {
+                parentObject = new GameObject("TileLayer_Dynamic");
+                parentObject.transform.parent = masterParent.transform;
+                parentObject.tag = "TileLayer";
+            }
+        }
+
 		created = new GameObject(name);
 		created.AddComponent<SpriteRenderer> ();
 		created.AddComponent<Tile> ();
 		created.transform.parent = parentObject.transform;
 		Undo.RegisterCreatedObjectUndo(created, "Created tile");
 
-
 		created.tag = "Tile";
 		created.transform.position = pos;
 		var renderer = created.GetComponent<SpriteRenderer>();
 		renderer.sprite = selectedSprite;
-		renderer.sortingOrder = tileLayer;
+		renderer.sortingOrder = tileLayer*100;
+        if (dynamicTiles) { renderer.sortingOrder = Mathf.RoundToInt((1 - created.transform.position.y + renderer.bounds.size.y) * 100); }
 		renderer.material = (Material)Resources.Load ("Materials/TileMaterial", typeof(Material));
 		var tid = created.GetComponent<Tile> ();
 		tid.tileID = selectedTileId;
