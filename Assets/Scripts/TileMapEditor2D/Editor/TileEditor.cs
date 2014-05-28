@@ -178,7 +178,7 @@ public class TileEditor : EditorWindow {
                 if (tf.parent.name == "TileLayer_Dynamic")
                 {
                     var renderer = tf.GetComponent<SpriteRenderer>();
-                    renderer.sortingOrder = Mathf.RoundToInt((1 - pos.y + renderer.bounds.size.y) * 100);
+                    renderer.sortingOrder = Mathf.RoundToInt(1 - (tf.position.y * 100 - 100 * renderer.bounds.size.y));
                     tf.name = "Tile_" + pos.x + "x" + pos.y + "_Dynamic";
                 }
 			}
@@ -429,7 +429,7 @@ public class TileEditor : EditorWindow {
                     r.transform.name = name;
                     r.transform.renderer.sortingOrder = tileLayer * 100;
                     var renderer = r.GetComponent<SpriteRenderer>();
-                    renderer.sortingOrder = Mathf.RoundToInt((1 - r.transform.position.y + renderer.bounds.size.y) * 100);
+                    renderer.sortingOrder = Mathf.RoundToInt(1 - (r.position.y * 100 - 100 * renderer.bounds.size.y));
                 }
             }
         }
@@ -557,7 +557,7 @@ public class TileEditor : EditorWindow {
 		var renderer = created.GetComponent<SpriteRenderer>();
 		renderer.sprite = selectedSprite;
 		renderer.sortingOrder = tileLayer*100;
-        if (dynamicTiles) { renderer.sortingOrder = Mathf.RoundToInt((1 - created.transform.position.y + renderer.bounds.size.y) * 100); }
+        if (dynamicTiles) { renderer.sortingOrder = Mathf.RoundToInt(1 - (created.transform.position.y * 100 - 100 * renderer.bounds.size.y)); }
 		renderer.material = (Material)Resources.Load ("Materials/TileMaterial", typeof(Material));
 		var tid = created.GetComponent<Tile> ();
 		tid.tileID = selectedTileId;

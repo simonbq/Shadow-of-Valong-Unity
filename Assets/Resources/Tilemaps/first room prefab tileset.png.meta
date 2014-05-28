@@ -1,0 +1,234 @@
+fileFormatVersion: 2
+guid: a7a823f5d220cea49bd5a4f86a6fbc6f
+TextureImporter:
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 1
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 1024
+  textureSettings:
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapMode: -1
+  nPOTScale: 1
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 0
+  textureType: 5
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: first room prefab tileset_0
+      rect:
+        serializedVersion: 2
+        x: 118
+        y: 931
+        width: 9
+        height: 4
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: first room prefab tileset_1
+      rect:
+        serializedVersion: 2
+        x: 291
+        y: 896
+        width: 316
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: first room prefab tileset_2
+      rect:
+        serializedVersion: 2
+        x: 819
+        y: 600
+        width: 390
+        height: 344
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: first room prefab tileset_3
+      rect:
+        serializedVersion: 2
+        x: 61
+        y: 765
+        width: 315
+        height: 157
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: first room prefab tileset_4
+      rect:
+        serializedVersion: 2
+        x: 1531
+        y: 875
+        width: 6
+        height: 4
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: first room prefab tileset_5
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 599
+        width: 92
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: first room prefab tileset_6
+      rect:
+        serializedVersion: 2
+        x: 312
+        y: 670
+        width: 67
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: first room prefab tileset_7
+      rect:
+        serializedVersion: 2
+        x: 397
+        y: 424
+        width: 363
+        height: 369
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: first room prefab tileset_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 607
+        width: 66
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: first room prefab tileset_9
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 472
+        width: 102
+        height: 151
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: first room prefab tileset_10
+      rect:
+        serializedVersion: 2
+        x: 1292
+        y: 859
+        width: 5
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: first room prefab tileset_11
+      rect:
+        serializedVersion: 2
+        x: 204
+        y: 424
+        width: 105
+        height: 99
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: first room prefab tileset_12
+      rect:
+        serializedVersion: 2
+        x: 1185
+        y: 312
+        width: 186
+        height: 155
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: first room prefab tileset_13
+      rect:
+        serializedVersion: 2
+        x: 29
+        y: 199
+        width: 192
+        height: 145
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: first room prefab tileset_14
+      rect:
+        serializedVersion: 2
+        x: 281
+        y: 271
+        width: 80
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: first room prefab tileset_15
+      rect:
+        serializedVersion: 2
+        x: 367
+        y: 269
+        width: 238
+        height: 99
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: first room prefab tileset_16
+      rect:
+        serializedVersion: 2
+        x: 622
+        y: 288
+        width: 4
+        height: 4
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: first room prefab tileset_17
+      rect:
+        serializedVersion: 2
+        x: 751
+        y: 127
+        width: 274
+        height: 288
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: first room prefab tileset_18
+      rect:
+        serializedVersion: 2
+        x: 235
+        y: 0
+        width: 150
+        height: 161
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: first room prefab tileset_19
+      rect:
+        serializedVersion: 2
+        x: 509
+        y: 16
+        width: 132
+        height: 233
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: first room prefab tileset_20
+      rect:
+        serializedVersion: 2
+        x: 1151
+        y: 127
+        width: 386
+        height: 130
+      alignment: 0
+      pivot: {x: 0, y: 0}
+  spritePackingTag: 
+  userData: 
