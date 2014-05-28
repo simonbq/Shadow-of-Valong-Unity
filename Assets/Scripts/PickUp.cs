@@ -3,6 +3,8 @@ using System.Collections;
 
 public class PickUp : MonoBehaviour {
 
+    public int objectId;
+
 	// Use this for initialization
 	void Start () {
 	

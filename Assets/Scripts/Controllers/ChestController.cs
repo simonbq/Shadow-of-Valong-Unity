@@ -3,6 +3,7 @@ using System.Collections;
 
 public class ChestController : MonoBehaviour {
 
+    public int failedDialogueId;
     public int dialogueId;
     public int[] itemsInside;
 
