@@ -42,5 +42,18 @@
         <Text speakerId="0" value="..." />
       </Texts>
     </Dialogue>
+    <Dialogue>
+      <Texts>
+        <Text speakerId="0" value="The people of Valong has been building up their settlement for many generations." />
+        <Text speakerId="0" value="In the world of Asusis, Valong is positioned in the centre, standing prominent, proud and tall." />
+        <Text speakerId="0" value="The other people of Asusis keeps to themselves... for most part." />
+        <Text speakerId="0" value="The pinnacle of Valong is its tall and wide mansion, acting as a museum of history, for its inhabitants." />
+      </Texts>
+    </Dialogue>
+    <Dialogue>
+      <Texts>
+        <Text speakerId="0" value="I found my favorite stick in here!" />
+      </Texts>
+    </Dialogue>
   </Dialogues>
 </DialogueCollection>
