@@ -55,5 +55,10 @@
         <Text speakerId="0" value="I found my favorite stick in here!" />
       </Texts>
     </Dialogue>
+    <Dialogue>
+      <Texts>
+        <Text speakerId="0" value="It's locked!" />
+      </Texts>
+    </Dialogue>
   </Dialogues>
 </DialogueCollection>
