@@ -5,9 +5,9 @@ using System.Collections.Generic;
 public class Tile : MonoBehaviour {
 	public int tileID;
 	public bool locked = false;
-    
     BoxCollider2D c;
     private bool hasGottenCollider = false;
+    public bool dynamic = false;
 
 	void OnDrawGizmos()
 	{
