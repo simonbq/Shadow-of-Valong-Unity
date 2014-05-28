@@ -1,195 +1,110 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
 public class Pathfinding : MonoBehaviour
 {
-    public float nodeSize = 0.32f;
+    public float gridSize = 0.32f;
+    public GameObject firstTile;
+    public GameObject lastTile;
     public GameObject target;
-    public int testcount = 50;
 
-    private List<Vector2> path = new List<Vector2>();
-    private List<Vector2> debugPath = new List<Vector2>();
-    private List<Vector2> debugPath2 = new List<Vector2>();
+    private Vector2 startPos;
+    private Vector2 endPos;
 
-    // Use this for initialization
     void Start()
     {
-        path = findPath();
+        startPos = firstTile.transform.position;
+        endPos = lastTile.transform.position;
     }
 
-    // Update is called once per frame
-    void Update()
+    public List<Vector2> findPath(Vector2 pos, Vector2 end)
     {
-        for(int i = 0; i < path.Count-1; i++)
-        {
-            Debug.DrawLine(path[i], path[i+1], Color.green);
-        }
-    }
+        
 
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        for (int i = 0; i < debugPath.Count - 1; i++)
-        {
-            Gizmos.DrawSphere(debugPath[i], 0.1f);
-        }
-    }
-
-    private List<Vector2> findPath()
-    {
-        List<Node> open = new List<Node>();
-        List<Node> closed = new List<Node>();
-        Node start = new Node();
-        Node goal = new Node();
-        start.position = grid(transform.position);
-        goal.position = grid(target.transform.position);
-        open.Add(start);
-
-        int debug = 0;
-
-        while (open.Count != 0 && debug < testcount)
-        {
-            debug++;
-            Node node = findNode(open);
-            open.Remove(node);
-            closed.Add(node);
-            debugPath.Add(node.position);
-
-            if (node.position == goal.position)
-            {
-                Debug.Log("SUCCESS!!! Only " + debug + " loops needed!!");
-                Debug.Log("OPEN = " +open.Count+ " CLOSED = " +closed.Count);
-                return resolvePath(node, start);
-            }
-
-            List<Node> adjacent = findAdjacent(node, goal, closed);
-            foreach (var a in adjacent)
-            {
-                if (!open.Exists(x => x.position == a.position) || node.G + a.dir < a.G)
-                {
-                    a.G = node.G + a.dir;
-                    a.F = a.G + a.H;
-                    a.prevNode = node;
-
-                    if (!open.Exists(x => x.position == a.position))
-                    {
-                        open.Add(a);
-                        Debug.Log("Doesnt already exist!");
-                    }
-                }
-            }
-        }
-        Debug.Log("Found nothing");
         return null;
     }
 
-    private List<Vector2> resolvePath(Node n, Node s)
+    private Vector2 nodeToWorld(IntVector pos)
     {
-        List<Vector2> path = new List<Vector2>();
-
-        do
-        {
-            path.Add(n.prevNode.position);
-            n = n.prevNode;
-        } while (path[path.Count - 1] != s.position);
-
-        return path;
+        Vector2 result = new Vector2(pos.x, pos.y);
+        result.x *= gridSize;
+        result.y *= gridSize;
+        result += startPos;
+        return result;
     }
 
-    private List<Node> findAdjacent(Node n, Node goal, List<Node> closed)
+    private IntVector worldToNode(Vector2 pos)
     {
-        List<Vector2> pos = new List<Vector2>();
-        pos.Add(new Vector2(nodeSize, 0));
-        pos.Add(new Vector2(-nodeSize, 0));
-        pos.Add(new Vector2(0, nodeSize));
-        pos.Add(new Vector2(0, -nodeSize));
-        pos.Add(new Vector2(nodeSize, nodeSize));
-        pos.Add(new Vector2(-nodeSize, nodeSize));
-        pos.Add(new Vector2(nodeSize, -nodeSize));
-        pos.Add(new Vector2(-nodeSize, -nodeSize));
+        pos.x -= startPos.x;
+        pos.y = startPos.y - pos.y;
+        pos.x /= gridSize;
+        pos.y /= gridSize;
 
-        List<Node> adjacent = new List<Node>();
-        foreach (var p in pos)
-        {
-            RaycastHit2D[] a = new RaycastHit2D[1];
-            int hit = Physics2D.RaycastNonAlloc(n.position, p + new Vector2(0.1f, 0), a, nodeSize + 0.1f);
-            Debug.Log("Hits: " + hit);
-            if (!closed.Exists(x => x.position == p) && hit == 0)
-            {
-                Node temp = new Node();
-                temp.position = n.position + p;
-
-                if (p.x == 0 || p.y == 0)
-                {
-                    temp.G = n.G + 10;
-                    temp.dir = 10;
-                }
-
-                else
-                {
-                    temp.dir = 14;
-                    temp.G = n.G + 14;
-                }
-
-                temp.H = estimateH(temp, goal);
-                temp.F = temp.G + temp.H;
-                temp.prevNode = n;
-
-                adjacent.Add(temp);
-                Debug.Log("Adding adjacent node");
-            }
-
-            else
-            {
-                Debug.Log("Already closed or blocked!!!");
-            }
-        }
-
-        return adjacent;
+        IntVector result = new IntVector();
+        result.x = Mathf.RoundToInt(pos.x);
+        result.y = Mathf.RoundToInt(pos.y);
+        return result;
     }
 
-    private float estimateH(Node n, Node goal)
+    private IntVector worldToNode(Vector3 pos)
     {
-        return 10 * (Mathf.Abs(n.position.x - goal.position.x) + Mathf.Abs(n.position.y - goal.position.y));
+        return worldToNode(new Vector2(pos.x, pos.y));
     }
 
-    private Node findNode(List<Node> open)
+    public static float estimateDistance(IntVector p1, IntVector p2)
     {
-        float lowest = Mathf.Infinity;
-        Node best = null;
-        foreach (var n in open)
-        {
-            if (n.F < lowest)
-            {
-                lowest = n.F;
-                best = n;
-            }
-        }
-
-        return best;
-    }
-
-    private Vector2 grid(Vector3 pos)
-    {
-        return grid(new Vector2(pos.x, pos.y));
-    }
-
-    private Vector2 grid(Vector2 pos)
-    {
-        pos.x = nodeSize * Mathf.Round(pos.x / nodeSize);
-        pos.y = nodeSize * Mathf.Round(pos.y / nodeSize);
-        pos += new Vector2(nodeSize / 2, -(nodeSize / 2));
-        return pos;
+        return 10 * (Mathf.Abs(p1.x - p2.x) + Mathf.Abs(p1.y - p2.y));
     }
 }
 
-public class Node
+class Node : IEquatable<Node>
 {
-    public Vector2 position = new Vector2();
-    public Node prevNode = null;
-    public float dir = 0;
-    public float F = 0;
-    public float G = 0;
-    public float H = 0;
+    public IntVector pos;
+    public Node prev;
+    public int gScore = 0;
+    public float hScore = 0;
+    public float total = 0;
+
+    public Node(IntVector position, Node previous)
+    {
+        pos = position;
+        recalculate(previous);
+    }
+
+    public void recalculate(Node p)
+    {
+        int cost = 10;
+        if (Mathf.Abs(p.pos.x - pos.x) == 1 && Mathf.Abs(p.pos.y - pos.y) == 1)
+        {
+            cost = 14;
+        }
+        gScore = prev.gScore + cost;
+        if (p != null)
+        {
+            hScore = Pathfinding.estimateDistance(pos, p.pos);
+        }
+        total = hScore + gScore;
+        prev = p;
+    }
+
+    public bool Equals(Node other)
+    {
+        return this.pos.x == other.pos.x && this.pos.y == other.pos.y;
+    }
+}
+
+class IntVector
+{
+    public int x, y;
+    public void IntVector()
+    {
+        x = y = 0;
+    }
+    public void IntVector(int xx, int yy)
+    {
+        x = xx;
+        y = yy;
+    }
 }
