@@ -13,10 +13,12 @@ public class Pathfinding : MonoBehaviour
 
     private List<Vector2> path;
     private List<Vector2> nodes = new List<Vector2>();
+	private List<IntVector> colliders = new List<IntVector>();
 
     void Start()
     {
-        path = findPath(startPos, endPos);
+		loadColliders ();
+		path = findPath(new Vector2(0.96f, -2.24f), new Vector2(3.84f, -1.6f));
         //Debug.Log(path.Count);
         Debug.Log(path[path.Count - 1]);
     }
@@ -37,14 +39,35 @@ public class Pathfinding : MonoBehaviour
         }
     }
 
+	public void loadColliders()
+	{
+		GameObject tiles = GameObject.Find ("Tiles");
+		foreach(Transform layer in tiles.transform)
+		{
+			foreach(Transform t in layer.transform)
+			{
+				if(t.gameObject.layer == 11)
+				{
+					colliders.Add(worldToNode (t.transform.position));
+				}
+			}
+		}
+	}
+
     public List<Vector2> findPath(Vector2 pos, Vector2 end)
     {
         int debug = 0;
         
         OpenList openList = new OpenList();
-        IntVector listSize = worldToNode(end);
+        IntVector listSize = worldToNode(endPos);
         Debug.Log(listSize.x + "x" + listSize.y);
         bool[,] closedList = new bool[listSize.x + 1, listSize.y + 1];
+
+		for(int i = 0; i < colliders.Count; i++)
+		{
+			closedList[colliders[i].x, colliders[i].y] = true;
+		}
+
 
         Node start = new Node(worldToNode(pos), null);
         openList.addNode(start);
