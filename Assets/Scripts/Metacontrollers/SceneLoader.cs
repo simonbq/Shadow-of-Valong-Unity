@@ -7,6 +7,7 @@ public class SceneLoader : MonoBehaviour {
     public Color fadeColor = new Color(0,0,0,1);
     public float fadeTime = 1.0f;
     public int portalId;
+    public bool saveOnLoad = true;
 
     private GUIStyle backgroundStyle = new GUIStyle();
     private Color currentColor = Color.clear;
@@ -50,9 +51,11 @@ public class SceneLoader : MonoBehaviour {
 
     void loadLevel()
     {
-        PlayerPrefs.SetString("currentLevel", levelToLoad);
-        PlayerPrefs.Save();
-        Debug.Log("Saving level: " + levelToLoad);
+    	if(saveOnLoad){
+	        PlayerPrefs.SetString("currentLevel", levelToLoad);
+	        PlayerPrefs.Save();
+	        Debug.Log("Saving level: " + levelToLoad);
+        }
         Debug.Log("Changing level to: " + levelToLoad);
         Application.LoadLevel(levelToLoad);
     }

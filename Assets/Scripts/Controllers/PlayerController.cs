@@ -92,6 +92,7 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetButtonDown("Inventory")){
             /*Y button*/
             //Ingame menus
+            /*
             switch(GameController.gameState){
                 case GameController.GameState.GAME:
                     GameController.gameState = GameController.GameState.QUESTMENU;
@@ -103,6 +104,7 @@ public class PlayerController : MonoBehaviour {
                     GameController.gameState = GameController.GameState.GAME;
                     break;
             }
+            */
         }
 	}
 

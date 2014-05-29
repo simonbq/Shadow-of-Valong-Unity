@@ -54,11 +54,11 @@ public class DialogueController : MonoBehaviour {
             }
         }
     }
-    float getHeight(float height)
+    public static float getHeight(float height)
     {
         return height * Screen.height / 1080;
     }
-    float getWidth(float width)
+    public static float getWidth(float width)
     {
         return width * Screen.width / 1920;
     }

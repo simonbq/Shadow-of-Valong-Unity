@@ -14,4 +14,8 @@ public class PickUp : MonoBehaviour {
 	void Update () {
 	
 	}
+	void Interact(){
+		ChestController.hasKey = true;
+		Destroy(gameObject);
+	}
 }

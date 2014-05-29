@@ -17,15 +17,17 @@ public class Destructible : MonoBehaviour {
 
     void Interact()
     {
-        if (!destroyParent)
-        {
-            Debug.Log("Destroying self: " + gameObject);
-            Destroy(gameObject);
-        }
-        if (destroyParent)
-        {
-            Debug.Log(gameObject + " destroying parent: " + transform.parent.gameObject);
-            Destroy(transform.parent.gameObject);
-        }
+		if(ChestController.hasStick){
+	        if (!destroyParent)
+	        {
+	            Debug.Log("Destroying self: " + gameObject);
+	            Destroy(gameObject);
+	        }
+	        if (destroyParent)
+	        {
+	            Debug.Log(gameObject + " destroying parent: " + transform.parent.gameObject);
+	            Destroy(transform.parent.gameObject);
+	        }
+		}
     }
 }

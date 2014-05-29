@@ -3,6 +3,9 @@ using System.Collections;
 
 public class ChestController : MonoBehaviour {
 
+	public static bool hasKey;
+	public static bool hasStick;
+
     public int failedDialogueId;
     public int dialogueId;
 
@@ -24,9 +27,14 @@ public class ChestController : MonoBehaviour {
     {
         if (!opened)
         {
-            DialogueController.startDialogue(dialogueId);
-            Debug.Log("Add items from chest to inventory now");
-            opened = true;
+        	if(hasKey){
+	            DialogueController.startDialogue(dialogueId);
+	            Debug.Log("Add items from chest to inventory now");
+	            opened = true;
+	            hasStick = true;
+            }else{
+            	DialogueController.startDialogue(failedDialogueId);
+            }
         }
     }
 }

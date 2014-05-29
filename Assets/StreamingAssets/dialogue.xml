@@ -53,6 +53,7 @@
     <Dialogue>
       <Texts>
         <Text speakerId="0" value="I found my favorite stick in here!" />
+        <Text speakerId="0" value="Maybe I could use it to clear the debris?" />
       </Texts>
     </Dialogue>
     <Dialogue>
