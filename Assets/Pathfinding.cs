@@ -48,7 +48,8 @@ public class Pathfinding : MonoBehaviour
 			{
 				if(t.gameObject.layer == 11)
 				{
-					colliders.Add(worldToNode (t.transform.position));
+					IntVector pos = worldToNode (t.transform.position);
+					colliders.Add(pos);
 				}
 			}
 		}
@@ -175,7 +176,7 @@ public class Pathfinding : MonoBehaviour
 
     public static float estimateDistance(IntVector p1, IntVector p2)
     {
-        return 10 * (Mathf.Abs(p1.x - p2.x) + Mathf.Abs(p1.y - p2.y));
+        return 10 * Mathf.Max(Mathf.Abs(p1.x - p2.x), Mathf.Abs(p1.y - p2.y));
     }
 }
 
