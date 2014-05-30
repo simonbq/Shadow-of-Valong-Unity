@@ -3,45 +3,47 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class Pathfinding : MonoBehaviour
+public class Pathfinding
 {
-    public float gridSize = 0.32f;
-    public GameObject target;
-
-    public Vector2 startPos;
-    public Vector2 endPos;
+    private float gridSize = 0.32f;
+    private Vector2 startPos;
+    private Vector2 endPos;
 
     private List<Vector2> path;
     private List<Vector2> nodes = new List<Vector2>();
-	private List<IntVector> colliders = new List<IntVector>();
+    private bool[,] colliders;
 
-    void Start()
+    private static Pathfinding instance = null;
+    private Pathfinding() 
     {
-		loadColliders ();
-		path = findPath(new Vector2(0.96f, -2.24f), new Vector2(3.84f, -1.6f));
-        //Debug.Log(path.Count);
-        Debug.Log(path[path.Count - 1]);
+    }
+    public static Pathfinding getInstance()
+    {
+        if(instance == null)
+        {
+            instance = new Pathfinding();
+        }
+
+        return instance;
     }
 
-    void Update()
+    public void setMapDimensions(Vector2 start, Vector2 end)
     {
-        for (int i = 0; i < path.Count-1; i++)
-        {
-            Debug.DrawLine(path[i], path[i + 1], Color.green);
-        }
+        startPos = start;
+        endPos = end;
     }
 
-    void OnDrawGizmos()
+    public void setGridSize(float size)
     {
-        for (int i = 0; i < nodes.Count - 1; i++)
-        {
-            Gizmos.DrawSphere(nodes[i], 0.1f);
-        }
+        gridSize = size;
     }
 
 	public void loadColliders()
 	{
-		GameObject tiles = GameObject.Find ("Tiles");
+        IntVector listSize = worldToNode(endPos);
+        colliders = new bool[listSize.x + 1, listSize.y + 1];
+        
+        GameObject tiles = GameObject.Find ("Tiles");
 		foreach(Transform layer in tiles.transform)
 		{
 			foreach(Transform t in layer.transform)
@@ -49,7 +51,7 @@ public class Pathfinding : MonoBehaviour
 				if(t.gameObject.layer == 11)
 				{
 					IntVector pos = worldToNode (t.transform.position);
-					colliders.Add(pos);
+                    colliders[pos.x, pos.y] = true;
 				}
 			}
 		}
@@ -63,12 +65,6 @@ public class Pathfinding : MonoBehaviour
         IntVector listSize = worldToNode(endPos);
         Debug.Log(listSize.x + "x" + listSize.y);
         bool[,] closedList = new bool[listSize.x + 1, listSize.y + 1];
-
-		for(int i = 0; i < colliders.Count; i++)
-		{
-			closedList[colliders[i].x, colliders[i].y] = true;
-		}
-
 
         Node start = new Node(worldToNode(pos), null);
         openList.addNode(start);
@@ -105,11 +101,25 @@ public class Pathfinding : MonoBehaviour
 
             for (int i = 0; i < 8; i++)
             {
+                if (a[i].x > 0 &&
+                    a[i].y > 0 &&
+                    colliders[a[i].x + 1, a[i].y + 1] == true) { continue; }
+                if (a[i].x < listSize.x &&
+                    a[i].y > 0 &&
+                    colliders[a[i].x - 1, a[i].y + 1] == true) { continue; }
+                if (a[i].x > 0 &&
+                    a[i].y < listSize.y &&
+                    colliders[a[i].x + 1, a[i].y - 1] == true) { continue; }
+                if (a[i].x < listSize.x &&
+                    a[i].y < listSize.y &&
+                    colliders[a[i].x - 1, a[i].y - 1] == true) { continue; }
+
                 if (a[i].x < 0 ||
                     a[i].x > listSize.x ||
                     a[i].y > listSize.y ||
                     a[i].y < 0 ||
-                    closedList[a[i].x, a[i].y] == true)
+                    closedList[a[i].x, a[i].y] == true ||
+                    colliders[a[i].x, a[i].y] == true)
                 {
                     continue;
                 }
@@ -332,5 +342,9 @@ public class IntVector
     {
         x = xx;
         y = yy;
+    }
+    public bool Equals(IntVector other)
+    {
+        return x == other.x && y == other.y;
     }
 }
