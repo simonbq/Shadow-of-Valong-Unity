@@ -73,6 +73,11 @@ public class FadeInOut : MonoBehaviour {
         }
 
         if (currentState == States.LOADNEXT){
+            print("Starting game");
+
+            DontDestroyOnLoad(gamestate.Instance);
+            gamestate.Instance.startState();
+
             Application.LoadLevel(levelToLoad);
         }
 
