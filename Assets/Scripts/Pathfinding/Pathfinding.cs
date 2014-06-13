@@ -197,14 +197,7 @@ public class Pathfinding
     {
 		float dx = Mathf.Abs(p1.x - p2.x);
 		float dy = Mathf.Abs(p1.y - p2.y);
-		if(dx > dy)
-		{
-			return 14 * dy + 10 * (dx - dy);
-		}
-
-		else {
-			return 14 * dx + 10 * (dy - dx);
-		}
+		return 10 * (dx + dy) + (14 - 2 * 10) * Mathf.Min (dx, dy);
 
     }
 }
@@ -336,21 +329,18 @@ public class Node
             //}
 			gScore = prev.gScore + getCost (p);
             hScore = Pathfinding.estimateDistance(pos, g);
-			hScore *= 1.0001f;
+			//hScore *= 1.0001f;
             total = hScore + gScore;
         }
     }
 
 	public int getCost(Node p)
 	{
-		if(Mathf.Abs(p.pos.x - pos.x) + Mathf.Abs(p.pos.y - pos.y) == 2)
-		{
-			return 14;
-		}
+		int dx = Mathf.Abs(p.pos.x - pos.x);
+		int dy = Mathf.Abs(p.pos.y - pos.y);
+		int cost = 10 + 4 * Mathf.Min (dx, dy); 
 
-		else{
-			return 10;
-		}
+		return cost;
 	}
 
     public bool Equals(Node other)
