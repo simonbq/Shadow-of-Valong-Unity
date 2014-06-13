@@ -38,7 +38,7 @@ public class Pathfind_Object : MonoBehaviour {
 		{
 			for(int i = 0; i < nodes.Count; i++)
 			{
-				Gizmos.DrawSphere(nodes[i], 0.2f);
+				Gizmos.DrawSphere(nodes[i], 0.1f);
 			}
 		}
 	}

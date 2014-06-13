@@ -140,7 +140,7 @@ public class Pathfinding
                     openList.addNode(adjacent);
                 }
 
-                else if(node.gScore + adjacent.getCost(node) < adjacent.gScore)
+				else if(node.gScore + adjacent.getCost(node) < adjacent.gScore)
                 {
                     adjacent.recalculate(node);
                 }
@@ -195,7 +195,17 @@ public class Pathfinding
 
     public static float estimateDistance(IntVector p1, IntVector p2)
     {
-        return 10 * (Mathf.Abs(p1.x - p2.x) + Mathf.Abs(p1.y - p2.y));
+		float dx = Mathf.Abs(p1.x - p2.x);
+		float dy = Mathf.Abs(p1.y - p2.y);
+		if(dx > dy)
+		{
+			return 14 * dy + 10 * (dx - dy);
+		}
+
+		else {
+			return 14 * dx + 10 * (dy - dx);
+		}
+
     }
 }
 
@@ -210,7 +220,7 @@ class OpenList
         if (best == null)
         {
             best = add;
-            size = 0;
+            size = 1;
         }
 
         else
@@ -232,7 +242,8 @@ class OpenList
                     add.prev = search;
                     search.next = add;
                     //Debug.Log(add.node.total + " > " + search.node.total);
-                    i = size;
+					size++;
+					return;
                 }
 
                 else if (search.next != null)
@@ -244,12 +255,11 @@ class OpenList
                 {
                     add.prev = search;
                     search.next = add;
-                    i = size;
+					size++;
+					return;
                 }
             }
         }
-
-        size++;
     }
 
     public void removeBest()
@@ -326,6 +336,7 @@ public class Node
             //}
 			gScore = prev.gScore + getCost (p);
             hScore = Pathfinding.estimateDistance(pos, g);
+			hScore *= 1.0001f;
             total = hScore + gScore;
         }
     }
