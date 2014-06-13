@@ -8,6 +8,7 @@ public class Pathfind_Object : MonoBehaviour {
     private Vector2 start;
     private Vector2 goal;
     private List<Vector2> path;
+	private List<Vector2> nodes;
 
 	// Use this for initialization
 	void Start () {
@@ -19,11 +20,26 @@ public class Pathfind_Object : MonoBehaviour {
 	void Update () {
 	    start = transform.position;
         goal = target.transform.position;
-        path = Pathfinding.getInstance().findPath(start, goal);
+		path = Pathfinding.getInstance().findPath(start, goal);
+		nodes = Pathfinding.getInstance().getNodes();
 
-        for (int i = 0; i < path.Count - 1; i++)
-        {
-            Debug.DrawLine(path[i], path[i + 1], Color.green);
-        }
+        if(path != null)
+		{
+			for (int i = 0; i < path.Count - 1; i++)
+	        {
+	            Debug.DrawLine(path[i], path[i + 1], Color.green);
+	        }
+		}
+	}
+
+	void OnDrawGizmos()
+	{
+		if(nodes != null)
+		{
+			for(int i = 0; i < nodes.Count; i++)
+			{
+				Gizmos.DrawSphere(nodes[i], 0.2f);
+			}
+		}
 	}
 }

@@ -27,6 +27,11 @@ public class Pathfinding
         return instance;
     }
 
+	public List<Vector2> getNodes()
+	{
+		return nodes;
+	}
+
     public void setMapDimensions(Vector2 start, Vector2 end)
     {
         startPos = start;
@@ -59,17 +64,19 @@ public class Pathfinding
 
     public List<Vector2> findPath(Vector2 pos, Vector2 end)
     {
-        int debug = 0;
+		nodes.Clear();
+		int debug = 0;
         
         OpenList openList = new OpenList();
         IntVector listSize = worldToNode(endPos);
         Debug.Log(listSize.x + "x" + listSize.y);
         bool[,] closedList = new bool[listSize.x + 1, listSize.y + 1];
 
+		IntVector goal = worldToNode(end);
+		Node.setGoal(goal);
+
         Node start = new Node(worldToNode(pos), null);
         openList.addNode(start);
-
-        IntVector goal = worldToNode(end);
 
         while (openList.size > 0)
         {
@@ -101,7 +108,8 @@ public class Pathfinding
 
             for (int i = 0; i < 8; i++)
             {
-                if (a[i].x > 0 &&
+                /*
+				if (a[i].x > 0 &&
                     a[i].y > 0 &&
                     colliders[a[i].x + 1, a[i].y + 1] == true) { continue; }
                 if (a[i].x < listSize.x &&
@@ -113,6 +121,7 @@ public class Pathfinding
                 if (a[i].x < listSize.x &&
                     a[i].y < listSize.y &&
                     colliders[a[i].x - 1, a[i].y - 1] == true) { continue; }
+                    */
 
                 if (a[i].x < 0 ||
                     a[i].x > listSize.x ||
@@ -131,7 +140,7 @@ public class Pathfinding
                     openList.addNode(adjacent);
                 }
 
-                else if(node.gScore + adjacent.cost < adjacent.gScore)
+                else if(node.gScore + adjacent.getCost(node) < adjacent.gScore)
                 {
                     adjacent.recalculate(node);
                 }
@@ -186,7 +195,7 @@ public class Pathfinding
 
     public static float estimateDistance(IntVector p1, IntVector p2)
     {
-        return 10 * Mathf.Max(Mathf.Abs(p1.x - p2.x), Mathf.Abs(p1.y - p2.y));
+        return 10 * (Mathf.Abs(p1.x - p2.x) + Mathf.Abs(p1.y - p2.y));
     }
 }
 
@@ -213,16 +222,16 @@ class OpenList
                 {
                     if (search.prev != null)
                     {
-                        add.prev = search.prev;
+                        add.next = search.next;
                     }
 
                     else
                     {
                         best = add;
                     }
-                    add.next = search;
-                    search.prev = add;
-                    Debug.Log(add.node.total + " < " + search.node.total);
+                    add.prev = search;
+                    search.next = add;
+                    //Debug.Log(add.node.total + " > " + search.node.total);
                     i = size;
                 }
 
@@ -292,13 +301,13 @@ class OpenNode
 }
 
 public class Node
-{
-    public IntVector pos;
+{	public IntVector pos;
     public Node prev;
     public int gScore = 0;
     public float hScore = 0;
     public float total = 0;
-    public int cost = 0;
+
+	private static IntVector g;
 
     public Node(IntVector position, Node previous)
     {
@@ -311,24 +320,37 @@ public class Node
         if (p != null)
         {
             prev = p;
-            cost = 10;
             //if (Mathf.Abs(p.pos.x - pos.x) == 1 && Mathf.Abs(p.pos.y - pos.y) == 1)
             //{
             //    cost = 14;
             //}
-            gScore = prev.gScore + cost;
-            if (p != null)
-            {
-                hScore = Pathfinding.estimateDistance(pos, p.pos);
-            }
+			gScore = prev.gScore + getCost (p);
+            hScore = Pathfinding.estimateDistance(pos, g);
             total = hScore + gScore;
         }
     }
+
+	public int getCost(Node p)
+	{
+		if(Mathf.Abs(p.pos.x - pos.x) + Mathf.Abs(p.pos.y - pos.y) == 2)
+		{
+			return 14;
+		}
+
+		else{
+			return 10;
+		}
+	}
 
     public bool Equals(Node other)
     {
         return this.pos.x == other.pos.x && this.pos.y == other.pos.y;
     }
+
+	public static void setGoal(IntVector goal)
+	{
+		g = goal;
+	}
 }
 
 public class IntVector
