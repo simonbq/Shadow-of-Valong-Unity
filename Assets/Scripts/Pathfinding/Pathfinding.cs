@@ -11,6 +11,7 @@ public class Pathfinding
 
     private List<Vector2> path;
     private List<Vector2> nodes = new List<Vector2>();
+    private List<Vector2> closed = new List<Vector2>();
     private bool[,] colliders;
 
     private static Pathfinding instance = null;
@@ -31,6 +32,11 @@ public class Pathfinding
 	{
 		return nodes;
 	}
+
+    public List<Vector2> getClosedNodes()
+    {
+        return closed;
+    }
 
     public void setMapDimensions(Vector2 start, Vector2 end)
     {
@@ -65,6 +71,7 @@ public class Pathfinding
     public List<Vector2> findPath(Vector2 pos, Vector2 end)
     {
 		nodes.Clear();
+        closed.Clear();
 		int debug = 0;
         
         OpenList openList = new OpenList();
@@ -77,22 +84,35 @@ public class Pathfinding
 
         Node start = new Node(worldToNode(pos), null);
         openList.addNode(start);
+        nodes.Add(nodeToWorld(start.pos));
 
         while (openList.size > 0)
         {
             debug++;
+            
             //Debug.Log("Loop " + debug + " - Open size " + openList.size);
             Node node = openList.best.node;
-            nodes.Add(nodeToWorld(node.pos));
+            nodes.Remove(nodeToWorld(node.pos));
+            closed.Add(nodeToWorld(node.pos));
             openList.removeBest();
             //Debug.Log("Score: " + node.total);
             //Debug.Log(node.pos.x + "x" + node.pos.y);
             closedList[node.pos.x, node.pos.y] = true;
-
-            if (node.pos.x == goal.x &&
-                node.pos.y == goal.y)
+            if (closedList[goal.x, goal.y] == true)
             {
                 Debug.Log("SUCCESS!!!");
+                /*int cls = 0;
+                for (int x = 0; x < listSize.x; x++)
+                {
+                    for (int y = 0; y < listSize.y; y++)
+                    {
+                        if (closedList[x, y] == true)
+                        {
+                            cls++;
+                        }
+                    }
+                }
+                Debug.Log(cls + " closed nodes");*/
                 return resolvePath(node, start);
             }
 
@@ -137,6 +157,7 @@ public class Pathfinding
                 if (adjacent == null)
                 {
                     adjacent = new Node(a[i], node);
+                    nodes.Add(nodeToWorld(adjacent.pos));
                     openList.addNode(adjacent);
                 }
 
@@ -198,7 +219,6 @@ public class Pathfinding
 		float dx = Mathf.Abs(p1.x - p2.x);
 		float dy = Mathf.Abs(p1.y - p2.y);
 		return 10 * (dx + dy) + (14 - 2 * 10) * Mathf.Min (dx, dy);
-
     }
 }
 
@@ -329,7 +349,7 @@ public class Node
             //}
 			gScore = prev.gScore + getCost (p);
             hScore = Pathfinding.estimateDistance(pos, g);
-			//hScore *= 1.0001f;
+			hScore *= 1.0001f;
             total = hScore + gScore;
         }
     }
@@ -338,7 +358,7 @@ public class Node
 	{
 		int dx = Mathf.Abs(p.pos.x - pos.x);
 		int dy = Mathf.Abs(p.pos.y - pos.y);
-		int cost = 10 + 4 * Mathf.Min (dx, dy); 
+		int cost = 10 + 4 * Mathf.Min (dx, dy);
 
 		return cost;
 	}
