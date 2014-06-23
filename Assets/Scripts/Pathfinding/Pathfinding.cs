@@ -128,20 +128,16 @@ public class Pathfinding
 
             for (int i = 0; i < 8; i++)
             {
-                /*
-				if (a[i].x > 0 &&
-                    a[i].y > 0 &&
-                    colliders[a[i].x + 1, a[i].y + 1] == true) { continue; }
-                if (a[i].x < listSize.x &&
-                    a[i].y > 0 &&
-                    colliders[a[i].x - 1, a[i].y + 1] == true) { continue; }
-                if (a[i].x > 0 &&
-                    a[i].y < listSize.y &&
-                    colliders[a[i].x + 1, a[i].y - 1] == true) { continue; }
-                if (a[i].x < listSize.x &&
-                    a[i].y < listSize.y &&
-                    colliders[a[i].x - 1, a[i].y - 1] == true) { continue; }
-                    */
+                //for (int o = -1; o <= 1; o++)
+                //{
+                //    if (a[i].x > 0 &&
+                //        a[i].y > 0 &&
+                //        colliders[a[i].x + i, a[i].y + i] == true &&
+                //        (colliders[a[i].x + i + 1, a[i].y + i + 1] == true ||
+                //        colliders[a[i].x + i - 1, a[i].y + i + 1] == true ||
+                //        colliders[a[i].x + i + 1, a[i].y + i - 1] == true ||
+                //        colliders[a[i].x + i - 1, a[i].y + i - 1] == true)) { continue; }
+                //}
 
                 if (a[i].x < 0 ||
                     a[i].x > listSize.x ||
@@ -241,19 +237,23 @@ class OpenList
             OpenNode search = best;
             for (int i = 0; i < size; i++)
             {
-                if (search.node.total > add.node.total)
+                if (search.node.total < add.node.total)
                 {
                     if (search.prev != null)
                     {
-                        add.next = search.next;
+                        add.prev = search.prev;
+                        add.next = search;
+                        search.prev.next = add;
+                        search.prev = add;
                     }
 
                     else
                     {
                         best = add;
+                        add.next = search;
+                        search.prev = add;
                     }
-                    add.prev = search;
-                    search.next = add;
+                    
                     //Debug.Log(add.node.total + " > " + search.node.total);
 					size++;
 					return;
@@ -349,7 +349,7 @@ public class Node
             //}
 			gScore = prev.gScore + getCost (p);
             hScore = Pathfinding.estimateDistance(pos, g);
-			hScore *= 1.0001f;
+			hScore *= 1.01f;
             total = hScore + gScore;
         }
     }
