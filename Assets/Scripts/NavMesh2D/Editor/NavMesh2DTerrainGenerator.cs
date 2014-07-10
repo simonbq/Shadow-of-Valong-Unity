@@ -6,6 +6,7 @@ using System.Collections.Generic;
 public class NavMesh2DTerrainGenerator : EditorWindow {
 
     private int terrainResolution = 64;
+    private int terrainDetail = 2;
     private float tileSize = 0.32f;
     private GameObject terrain;
 	// Use this for initialization
@@ -24,18 +25,20 @@ public class NavMesh2DTerrainGenerator : EditorWindow {
 	
 	// Update is called once per frame
 	void Update () {
-	
+
 	}
 
     void OnGUI()
     {
-        terrainResolution = EditorGUILayout.IntField("Terrain resolution", terrainResolution);  
+        terrainResolution = EditorGUILayout.IntField("Terrain resolution", terrainResolution);
+        terrainDetail = EditorGUILayout.IntField("Terrain detail", terrainDetail);  
         GUILayout.Label("Tile size: " + tileSize);
-        GUILayout.Label("Terrain size: " + terrainResolution / tileSize);
+        GUILayout.Label("Terrain size: " + ((terrainResolution * tileSize) / terrainDetail));
         
         if (GUILayout.Button("Generate navigation terrain"))
         {
             terrain = generateNavTerrain();
+            Debug.Log(((terrainResolution * tileSize) / terrainDetail));
         }
     }
 
@@ -69,16 +72,16 @@ public class NavMesh2DTerrainGenerator : EditorWindow {
             }
             TerrainData tData = new TerrainData();
             tData.heightmapResolution = terrainResolution;
-            tData.size = new Vector3(terrainResolution * tileSize, 1, terrainResolution * tileSize);
+            tData.size = new Vector3((terrainResolution * tileSize) / terrainDetail, 1, (terrainResolution * tileSize) / terrainDetail);
 
             float[,] heights = new float[terrainResolution, terrainResolution];
             foreach (var rect in positions)
             {
-                int x = Mathf.RoundToInt(-rect.x / tileSize) + terrainResolution / 2;
-                int y = Mathf.RoundToInt(rect.y / tileSize) + terrainResolution / 2;
-                int w = Mathf.RoundToInt(rect.width / tileSize);
-                int h = Mathf.RoundToInt(rect.height / tileSize);
-                //Debug.Log(x + ", " + y + ", " + w + ", " + h);
+                int x = Mathf.RoundToInt(-rect.x / tileSize) * terrainDetail + terrainResolution / 2;
+                int y = Mathf.RoundToInt(rect.y / tileSize) * terrainDetail + terrainResolution / 2;
+                int w = Mathf.RoundToInt(rect.width / tileSize) * terrainDetail;
+                int h = Mathf.RoundToInt(rect.height / tileSize) * terrainDetail;
+                Debug.Log(x + ", " + y + ", " + w + ", " + h);
 
                 for (int xx = 0; xx < w; xx++)
                 {
@@ -87,12 +90,10 @@ public class NavMesh2DTerrainGenerator : EditorWindow {
                         heights[x+xx, y+yy] = 1;
                     }
                 }
-
-                tData.SetHeights(0, 0, heights);
             }
-
+            tData.SetHeights(0, 0, heights);
             GameObject res = Terrain.CreateTerrainGameObject(tData);
-            res.transform.position = new Vector3(-(terrainResolution * tileSize) / 2, 1, -(terrainResolution * tileSize) / 2);
+            res.transform.position = new Vector3(-(terrainResolution * tileSize) / (2 * terrainDetail), 1, -(terrainResolution * tileSize) / (2 * terrainDetail));
             Debug.Log(tData.heightmapScale);
             res.name = "NavMesh2D Terrain";
             return res;
