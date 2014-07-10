@@ -74,7 +74,7 @@ public class NavMesh2DTerrainGenerator : EditorWindow {
             float[,] heights = new float[terrainResolution, terrainResolution];
             foreach (var rect in positions)
             {
-                int x = Mathf.RoundToInt(rect.x / tileSize) + terrainResolution / 2;
+                int x = Mathf.RoundToInt(-rect.x / tileSize) + terrainResolution / 2;
                 int y = Mathf.RoundToInt(rect.y / tileSize) + terrainResolution / 2;
                 int w = Mathf.RoundToInt(rect.width / tileSize);
                 int h = Mathf.RoundToInt(rect.height / tileSize);
@@ -93,6 +93,7 @@ public class NavMesh2DTerrainGenerator : EditorWindow {
 
             GameObject res = Terrain.CreateTerrainGameObject(tData);
             res.transform.position = new Vector3(-(terrainResolution * tileSize) / 2, 1, -(terrainResolution * tileSize) / 2);
+            Debug.Log(tData.heightmapScale);
             res.name = "NavMesh2D Terrain";
             return res;
         }
